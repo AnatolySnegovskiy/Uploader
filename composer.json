@@ -1,0 +1,30 @@
+{
+    "name": "carriongrow/uploader",
+    "minimum-stability": "dev",
+    "description": "Package of uploads",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Anatoliy Snegovskiy",
+            "email": "CarrionGrow@Gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.3.0",
+        "ext-json": "*",
+        "james-heinrich/getid3": "^1.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "CarrionGrow\\Uploader\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CarrionGrow\\Test\\": "test/"
+        }
+    }
+}
