@@ -20,5 +20,6 @@
   "autoload": {
     "psr-4": {"CarrionGrow\\Uploader\\": "src/"},
     "exclude-from-classmap": ["/test/"]
-  }
+  },
+  "minimum-stability": "dev"
 }
