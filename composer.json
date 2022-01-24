@@ -1,7 +1,9 @@
 {
     "name": "carriongrow/uploader",
     "description": "Package of uploads",
-    "license": "GPL-3.0-only",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [],
     "authors": [
         {
             "name": "Anatoliy Snegovskiy",
@@ -9,6 +11,7 @@
         }
     ],
     "require": {
+        "james-heinrich/getid3": "^1.9",
         "php": ">=7.3.0",
         "ext-json": "*"
     },
@@ -24,5 +27,6 @@
         "psr-4": {
             "CarrionGrow\\Test\\": "test/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
