@@ -1,7 +1,8 @@
 <?php
 
 
-use CarrionGrow\Uploader\Entity\Configs\VideoConfig;
+use CarrionGrow\Uploader\Exception\Exception as ExceptionAlias;
+use CarrionGrow\Uploader\Exception\FilesException;
 use CarrionGrow\Uploader\Upload;
 use PHPUnit\Framework\TestCase;
 
@@ -22,8 +23,8 @@ class TestUpload extends TestCase
     }
 
     /**
-     * @throws \CarrionGrow\Uploader\Exception\FilesException
-     * @throws \CarrionGrow\Uploader\Exception\Exception
+     * @throws FilesException
+     * @throws ExceptionAlias
      */
     public function testUploadPost()
     {
