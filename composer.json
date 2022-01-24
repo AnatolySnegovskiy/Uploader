@@ -25,8 +25,5 @@
         "psr-4": {
             "CarrionGrow\\Test\\": "test/"
         }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-    "version": "v1.1.1"
+    }
 }
