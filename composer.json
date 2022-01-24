@@ -1,32 +1,30 @@
 {
-    "name": "carriongrow/uploader",
-    "description": "Package of uploads",
-    "type": "library",
-    "license": "MIT",
-    "keywords": [],
-    "authors": [
-        {
-            "name": "Anatoliy Snegovskiy",
-            "email": "CarrionGrow@Gmail.com"
-        }
-    ],
-    "require": {
-        "james-heinrich/getid3": "^1.9",
-        "php": ">=7.3.0",
-        "ext-json": "*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^7"
-    },
-    "autoload": {
-        "psr-4": {
-            "CarrionGrow\\Uploader\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "CarrionGrow\\Test\\": "test/"
-        }
-    },
-    "minimum-stability": "dev"
+  "name": "carriongrow/uploader",
+  "description": "Package of uploads",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Anatoliy Snegovskiy",
+      "email": "CarrionGrow@Gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.3.0",
+    "ext-json": "*",
+    "james-heinrich/getid3": "^1.9@beta"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  },
+  "autoload": {
+    "psr-4": {
+      "CarrionGrow\\Uploader\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CarrionGrow\\Test\\": "test/"
+    }
+  }
 }
