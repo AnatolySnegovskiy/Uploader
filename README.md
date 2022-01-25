@@ -6,7 +6,7 @@ composer require carriongrow/uploader
 
 ## Installation
 ```bash
-$ composer require php-ffmpeg/php-ffmpeg
+$ composer require carriongrow/uploader
 ```
 
 ## Basic Usage
