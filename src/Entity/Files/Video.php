@@ -108,13 +108,13 @@ class Video extends File
         if ($this->config->getMaxWidth() > 0 && $this->width > $this->config->getMaxWidth())
             throw VideoException::widthLarger($this->config->getMaxWidth());
 
-        if ($this->config->getMaxHeight() > 0 && $this->width > $this->config->getMaxHeight())
+        if ($this->config->getMaxHeight() > 0 && $this->height > $this->config->getMaxHeight())
             throw VideoException::heightLarger($this->config->getMaxHeight());
 
         if ($this->config->getMinWidth() > 0 && $this->width < $this->config->getMinWidth())
             throw VideoException::widthLess($this->config->getMinWidth());
 
-        if ($this->config->getMinHeight() > 0 && $this->width < $this->config->getMinHeight())
+        if ($this->config->getMinHeight() > 0 && $this->height < $this->config->getMinHeight())
             throw VideoException::heightLess($this->config->getMinHeight());
 
         $this->validateVideoCodec();
