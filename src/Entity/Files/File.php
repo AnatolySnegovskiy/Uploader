@@ -12,7 +12,7 @@ class File extends Entity implements UploadHandlerInterface
 {
     /** @var string */
     protected $tempPath;
-    /** @var int */
+    /** @var float */
     protected $size;
     /** @var string */
     protected $originalName;
@@ -41,9 +41,9 @@ class File extends Entity implements UploadHandlerInterface
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getSize(): int
+    public function getSize(): float
     {
         return $this->size;
     }
