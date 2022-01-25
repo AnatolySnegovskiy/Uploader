@@ -31,7 +31,7 @@ class FileCollection extends ArrayCollection
     }
 
     /**
-     * @return File[]
+     * @return Video[]
      */
     public function getVideos(): array
     {
