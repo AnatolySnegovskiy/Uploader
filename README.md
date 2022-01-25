@@ -2,6 +2,12 @@
 
 An Object-Oriented library to upload files
 
+composer require carriongrow/uploader
+
+## Installation
+```bash
+$ composer require php-ffmpeg/php-ffmpeg
+```
 
 ## Basic Usage
 
