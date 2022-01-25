@@ -159,7 +159,6 @@ class Upload
 
     /**
      * @return array
-     * @throws Exception
      */
     private function reArrayGet(): array
     {
@@ -169,7 +168,6 @@ class Upload
     /**
      * @param array $linkList
      * @return array
-     * @throws Exception
      */
     private function linksToFilesObject(array $linkList): array
     {
@@ -242,7 +240,7 @@ class Upload
     {
         $uploadPath = $config->getUploadPath();
 
-        if (isset($uploadPath) && is_dir($uploadPath) === false) {
+        if (is_dir($uploadPath) === false) {
             mkdir($uploadPath, 0777, true);
         }
 

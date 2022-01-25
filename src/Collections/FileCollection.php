@@ -4,6 +4,7 @@ namespace CarrionGrow\Uploader\Collections;
 
 use CarrionGrow\Uploader\Entity\Files\File;
 use CarrionGrow\Uploader\Entity\Files\Image;
+use CarrionGrow\Uploader\Entity\Files\Video;
 use CarrionGrow\Uploader\Entity\ToArrayInterface;
 use CarrionGrow\Uploader\Exception\Exception;
 
@@ -26,6 +27,16 @@ class FileCollection extends ArrayCollection
     {
         return $this->filter(function ($element) {
             return $element instanceof Image;
+        })->toArray();
+    }
+
+    /**
+     * @return File[]
+     */
+    public function getVideos(): array
+    {
+        return $this->filter(function ($element) {
+            return $element instanceof Video;
         })->toArray();
     }
 
