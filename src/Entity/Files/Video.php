@@ -14,9 +14,9 @@ class Video extends File
     protected $width;
     /** @var int  */
     protected $height;
-    /** @var string  */
+    /** @var int  */
     protected $duration;
-    /** @var string  */
+    /** @var int  */
     protected $bitrate;
     /** @var string */
     protected $videoCodec;
@@ -43,17 +43,17 @@ class Video extends File
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getDuration()
+    public function getDuration(): int
     {
         return $this->duration;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getBitrate()
+    public function getBitrate(): int
     {
         return $this->bitrate;
     }
