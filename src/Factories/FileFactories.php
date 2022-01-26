@@ -28,7 +28,7 @@ class FileFactories
     {
         $type = Mimes::getFileType($tempData);
         $tempData['mimes'] = $type;
-        $file = $this->config->getHandler();
+        $file = clone $this->config->getHandler();
         $file->behave($tempData);
 
         return $file;
