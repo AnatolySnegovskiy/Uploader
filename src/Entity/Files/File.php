@@ -118,8 +118,8 @@ class File extends Entity implements UploadHandlerInterface
         $this->tempPath = $file['tmp_name'];
         $this->size = round($file['size'] / 1024, 2);
         $this->originalName = $file['name'];
-        $this->extension = $this->extractExtension($file['name']);
         $this->type = $file['mimes'];
+        $this->extension = $this->extractExtension($file['name']);
         $fileName = $this->prepFilename($this->config->getFileName() ?: $file['name']);
         $fileName = $this->limitFilenameLength($fileName);
 
@@ -149,6 +149,12 @@ class File extends Entity implements UploadHandlerInterface
         $x = explode('.', $filename);
 
         if (count($x) === 1) {
+            foreach (Mimes::EXTENSION_LIST as $extension => $mimesList) {
+                if ((is_array($mimesList) && in_array($this->type, $mimesList)) || (!is_array($mimesList) && strpos($mimesList, $this->type) !== false)) {
+                    return  '.' . $extension;
+                }
+            }
+
             return '';
         }
 

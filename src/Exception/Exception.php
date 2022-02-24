@@ -15,6 +15,6 @@ class Exception extends \Exception implements ToArrayInterface
 
     public function toArray(): array
     {
-        return ['code' => $this->getCode(), 'message' => $this->message];
+        return ['code' => $this->getCode(), 'message' => $this->getMessage()];
     }
 }
