@@ -154,6 +154,7 @@ class File extends Entity implements UploadHandlerInterface
             foreach (Mimes::EXTENSION_LIST as $extension => $mimesList) {
                 if (!is_array($mimesList) && strpos($mimesList, $this->type) !== false) {
                     $extensionResult =  '.' . $extension;
+                    break;
                 }
             }
 
@@ -161,6 +162,7 @@ class File extends Entity implements UploadHandlerInterface
                 foreach (Mimes::EXTENSION_LIST as $extension => $mimesList) {
                     if (is_array($mimesList) && in_array($this->type, $mimesList)) {
                         $extensionResult =  '.' . $extension;
+                        break;
                     }
                 }
             }
