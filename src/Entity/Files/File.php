@@ -148,13 +148,25 @@ class File extends Entity implements UploadHandlerInterface
     {
         $x = explode('.', $filename);
 
-        if (count($x) === 1) {
+        if (count($x) === 1 && $this->config->isExtensionByMimes()) {
+            $extensionResult = '';
+
             foreach (Mimes::EXTENSION_LIST as $extension => $mimesList) {
-                if ((is_array($mimesList) && in_array($this->type, $mimesList)) || (!is_array($mimesList) && strpos($mimesList, $this->type) !== false)) {
-                    return  '.' . $extension;
+                if (!is_array($mimesList) && strpos($mimesList, $this->type) !== false) {
+                    $extensionResult =  '.' . $extension;
                 }
             }
 
+            if (empty($extensionResult)) {
+                foreach (Mimes::EXTENSION_LIST as $extension => $mimesList) {
+                    if (is_array($mimesList) && in_array($this->type, $mimesList)) {
+                        $extensionResult =  '.' . $extension;
+                    }
+                }
+            }
+
+            return $extensionResult;
+        } else {
             return '';
         }
 

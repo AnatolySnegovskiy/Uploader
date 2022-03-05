@@ -19,7 +19,7 @@ class TestUpload extends TestCase
     public function testUploadFiles()
     {
         $this->testFileData();
-        var_dump($this->upload->uploadFiles()->toArray());
+        print_r($this->upload->uploadFiles()->toArray());
     }
 
     /**
@@ -28,7 +28,7 @@ class TestUpload extends TestCase
      */
     public function testUploadPost()
     {
-        $this->upload->getConfigs()->new('VIDEO')->image()->setUploadPath(__DIR__ . '/test')->save();
+        $this->upload->getConfigs()->new('VIDEO')->image()->setExtensionByMimes(false)->setUploadPath(__DIR__ . '/test')->save();
 
         $this->upload->uploadAll();
 
@@ -56,60 +56,25 @@ class TestUpload extends TestCase
         $_FILES = [
             "logotype" => [
                 "name" => [
-                    "birthday-1124.gif",
-                    ""
+                    "birthday-1124",
+                    "test"
                 ],
                 "type" => [
                     "image/jpeg",
-                    ""
+                    "image/jpeg"
                 ],
                 "tmp_name" => [
-                    __DIR__ . '/Files/birthday-1124.gif',
-                    ""
+                    __DIR__ . '/Files/maxresdefault.jpg',
+                    __DIR__ . '/Files/maxresdefault.jpg',
                 ],
                 "error" => [
                     0,
-                    4
+                    0
                 ],
                 "size" => [
                     701123,
-                    0
+                    701123
                 ]
-            ],
-            "logo_medium" => [
-                "name" => "",
-                "type" => "",
-                "tmp_name" => "",
-                "error" => 4,
-                "size" => 0
-            ],
-            "logo_small" => [
-                "name" => "",
-                "type" => "",
-                "tmp_name" => "",
-                "error" => 4,
-                "size" => 0
-            ],
-            "logo_email" => [
-                "name" => "",
-                "type" => "",
-                "tmp_name" => "",
-                "error" => 4,
-                "size" => 0
-            ],
-            "background" => [
-                "name" => "",
-                "type" => "",
-                "tmp_name" => "",
-                "error" => 4,
-                "size" => 0
-            ],
-            "background_mail" => [
-                "name" => "",
-                "type" => "",
-                "tmp_name" => "",
-                "error" => 4,
-                "size" => 0
             ]
         ];
     }

@@ -32,6 +32,8 @@ class Config extends Entity
     private $maxFilename = 0;
     /** @var int */
     private $maxFilenameIncrement = 100;
+    /** @var bool  */
+    private $extensionByMimes = true;
 
     /** @var UploadHandlerInterface */
     protected $handler;
@@ -267,6 +269,24 @@ class Config extends Entity
     public function setMaxFilenameIncrement(int $maxFilenameIncrement): self
     {
         $this->maxFilenameIncrement = max($maxFilenameIncrement, 0);
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExtensionByMimes(): bool
+    {
+        return $this->extensionByMimes;
+    }
+
+    /**
+     * @param bool $extensionByMimes
+     * @return $this
+     */
+    public function setExtensionByMimes(bool $extensionByMimes): self
+    {
+        $this->extensionByMimes = $extensionByMimes;
         return $this;
     }
 }
