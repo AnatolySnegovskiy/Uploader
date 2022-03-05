@@ -168,7 +168,7 @@ class File extends Entity implements UploadHandlerInterface
             }
 
             return $extensionResult;
-        } else {
+        } elseif (count($x) === 1) {
             return '';
         }
 
