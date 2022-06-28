@@ -159,6 +159,7 @@ class Upload
 
     /**
      * @return array
+     * @throws Exception
      */
     private function reArrayGet(): array
     {
@@ -168,6 +169,7 @@ class Upload
     /**
      * @param array $linkList
      * @return array
+     * @throws Exception
      */
     private function linksToFilesObject(array $linkList): array
     {
@@ -189,7 +191,13 @@ class Upload
             if (empty($codeError)) {
                 $this->temp[$name] = tmpfile();
                 $path = stream_get_meta_data($this->temp[$name])['uri'];
-                fwrite($this->temp[$name], file_get_contents($link));
+                $data = file_get_contents($link);
+
+                if (!empty($data)) {
+                    fwrite($this->temp[$name], $data);
+                } else {
+                    throw new Exception(Code::REMOTE_URI);
+                }
             }
 
             $result[$key] =
