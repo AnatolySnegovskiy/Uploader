@@ -177,15 +177,16 @@ class Upload
 
         foreach ($linkList as $key => $link) {
             if (!filter_var($link, FILTER_VALIDATE_URL)) {
-                continue;
+                throw new Exception(Code::REMOTE_URI);
             }
+
             $codeError = 0;
             $name = basename($link);
             $path = '';
             $headers = get_headers($link, true);
 
             if (!isset($headers['Content-Length'])) {
-                $codeError = 2;
+                $codeError = 4;
             }
 
             if (empty($codeError)) {
