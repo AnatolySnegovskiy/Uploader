@@ -12,7 +12,8 @@
   "require": {
     "php": ">=7.2.0",
     "ext-json": "*",
-    "james-heinrich/getid3": "^1.9"
+    "james-heinrich/getid3": "^1.9",
+    "true/punycode": "~2.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^7"

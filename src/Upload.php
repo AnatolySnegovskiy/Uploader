@@ -10,6 +10,7 @@ use CarrionGrow\Uploader\Exception\Code;
 use CarrionGrow\Uploader\Exception\Exception;
 use CarrionGrow\Uploader\Exception\FilesException;
 use CarrionGrow\Uploader\Factories\FileFactories;
+use CarrionGrow\Uploader\Utilities\UrlHelper;
 
 class Upload
 {
@@ -176,8 +177,10 @@ class Upload
         $result = [];
 
         foreach ($linkList as $key => $link) {
+            $link = UrlHelper::toUrl($link);
+
             if (!filter_var($link, FILTER_VALIDATE_URL)) {
-                throw new Exception(Code::REMOTE_URI);
+                continue;
             }
 
             $codeError = 0;
@@ -192,12 +195,12 @@ class Upload
             if (empty($codeError)) {
                 $this->temp[$name] = tmpfile();
                 $path = stream_get_meta_data($this->temp[$name])['uri'];
-                $data = file_get_contents($link);
+                $data = @file_get_contents($link);
 
                 if (!empty($data)) {
                     fwrite($this->temp[$name], $data);
                 } else {
-                    throw new Exception(Code::REMOTE_URI);
+                    $codeError = 4;
                 }
             }
 
