@@ -177,6 +177,7 @@ class Upload
         $result = [];
 
         foreach ($linkList as $key => $link) {
+            $name = basename($link);
             $link = UrlHelper::toUrl($link);
 
             if (!filter_var($link, FILTER_VALIDATE_URL)) {
@@ -184,7 +185,6 @@ class Upload
             }
 
             $codeError = 0;
-            $name = basename($link);
             $path = '';
             $headers = get_headers($link, true);
 
