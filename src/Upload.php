@@ -177,7 +177,7 @@ class Upload
         $result = [];
 
         foreach ($linkList as $key => $link) {
-            $name = basename($link);
+            $name = urldecode(basename($link));
             $link = UrlHelper::toUrl($link);
 
             if (!filter_var($link, FILTER_VALIDATE_URL)) {
