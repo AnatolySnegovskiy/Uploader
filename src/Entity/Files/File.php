@@ -246,7 +246,7 @@ class File extends Entity implements UploadHandlerInterface
         $path = $this->config->getUploadPath();
 
         if ($this->config->isEncryptName()) {
-            $filename = md5(uniqid(mt_rand())) . $this->extension;
+            $filename = md5(uniqid(mt_rand()));
         }
 
         if ($this->config->isOverwrite() || !file_exists($path . $filename . $this->extension)) {
