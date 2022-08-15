@@ -314,15 +314,7 @@ class Upload
      */
     private function getHeaders(string $link): array
     {
-        $arrContextOptions = stream_context_create([
-            "ssl" => [
-                "allow_self_signed"=>true,
-                "verify_peer"=>false,
-                "verify_peer_name"=>false,
-            ],
-        ]);
-
-        foreach (get_headers($link, true, $arrContextOptions) as $key => $item) {
+        foreach (get_headers($link, true) as $key => $item) {
             $headers[strtolower($key)] = is_array($item) ? end($item) : $item;
         }
 
