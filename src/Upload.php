@@ -108,6 +108,12 @@ class Upload
             }
         }
 
+        $anyConfig = $this->getConfig('any');
+
+        if (empty($listFiles) && !$anyConfig->isSkipError()) {
+            throw new FilesException(Code::NOT_FILE);
+        }
+
         return $array;
     }
 
@@ -180,9 +186,7 @@ class Upload
             $name = urldecode(basename($link));
             $link = UrlHelper::toUrl($link);
 
-            if (!filter_var($link, FILTER_VALIDATE_URL)) {
-                $codeError = 4;
-            } else {
+            if (filter_var($link, FILTER_VALIDATE_URL)) {
                 $codeError = 0;
                 $path = '';
                 $headers = $this->getHeaders($link);
