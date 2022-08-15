@@ -116,7 +116,7 @@ class File extends Entity implements UploadHandlerInterface
     public function behave(array $file)
     {
         $this->tempPath = $file['tmp_name'];
-        $this->size = round(((float)$file['size']) / 1024, 2) ?? 0;
+        $this->size = round($file['size'] / 1024, 2);
         $this->originalName = $file['name'];
         $this->type = $file['mimes'];
         $this->extension = $this->extractExtension($file['name']);

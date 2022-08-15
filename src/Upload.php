@@ -186,9 +186,9 @@ class Upload
 
             $codeError = 0;
             $path = '';
-            $headers = get_headers($link, true);
+            $headers = $this->getHeaders($link);
 
-            if (!isset($headers['Content-Length'])) {
+            if (empty($headers['Content-Length'])) {
                 $codeError = 4;
             }
 
@@ -306,5 +306,18 @@ class Upload
         fclose($fp);
 
         return true;
+    }
+
+    /**
+     * @param string $link
+     * @return array
+     */
+    private function getHeaders(string $link): array
+    {
+        foreach (get_headers($link, true) as $key => $item) {
+            $headers[$key] = is_array($item) ? end($item) : $item;
+        }
+
+        return $headers ?? [];
     }
 }
