@@ -181,14 +181,14 @@ class Upload
             $link = UrlHelper::toUrl($link);
 
             if (!filter_var($link, FILTER_VALIDATE_URL)) {
-                continue;
+                $codeError = 4;
+            } else {
+                $codeError = 0;
+                $path = '';
+                $headers = $this->getHeaders($link);
             }
 
-            $codeError = 0;
-            $path = '';
-            $headers = $this->getHeaders($link);
-
-            if (empty($headers['Content-Length'])) {
+            if (empty($headers['content-length'])) {
                 $codeError = 4;
             }
 
@@ -207,10 +207,10 @@ class Upload
             $result[$key] =
                 [
                     'name' => $name,
-                    'type' => $headers['Content-Type'] ?? '',
-                    'tmp_name' => $path,
+                    'type' => $headers['content-type'] ?? '',
+                    'tmp_name' => $path ?? '',
                     'error' => $codeError,
-                    'size' => $headers['Content-Length'] ?? '',
+                    'size' => $headers['content-length'] ?? '',
                 ];
         }
 
@@ -314,8 +314,16 @@ class Upload
      */
     private function getHeaders(string $link): array
     {
-        foreach (get_headers($link, true) as $key => $item) {
-            $headers[$key] = is_array($item) ? end($item) : $item;
+        $arrContextOptions = stream_context_create([
+            "ssl" => [
+                "allow_self_signed"=>true,
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ],
+        ]);
+
+        foreach (get_headers($link, true, $arrContextOptions) as $key => $item) {
+            $headers[strtolower($key)] = is_array($item) ? end($item) : $item;
         }
 
         return $headers ?? [];
