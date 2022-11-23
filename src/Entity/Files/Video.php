@@ -85,9 +85,8 @@ class Video extends File
         parent::behave($file);
 
         $meta = (new GetID3())->analyze($this->getTempPath());
-
-        $this->duration = round($meta['playtime_seconds'] ?? 0);
-        $this->bitrate = round(($meta['bitrate'] ?? 0) / 1000);
+        $this->duration = $meta['playtime_seconds'] ?? 0;
+        $this->bitrate = ($meta['bitrate'] ?? 0) / 1000;
         $this->videoCodec = $meta['video']['fourcc_lookup'] ?? '';
         $this->audioCodec = $meta['audio']['codec'] ?? '';
         $this->width = (int) ($meta['video']['resolution_x'] ?? 0);
