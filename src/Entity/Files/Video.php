@@ -43,17 +43,17 @@ class Video extends File
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getDuration(): int
+    public function getDuration(): float
     {
         return $this->duration;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getBitrate(): int
+    public function getBitrate(): float
     {
         return $this->bitrate;
     }
