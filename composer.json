@@ -14,7 +14,7 @@
     "ext-json": "*",
     "ext-fileinfo": "*",
     "james-heinrich/getid3": "^1.9",
-    "opis/uri": "1.x-dev"
+    "opis/uri": "^1.1"
   },
   "autoload": {
     "psr-4": {"CarrionGrow\\Uploader\\": "src/"},
