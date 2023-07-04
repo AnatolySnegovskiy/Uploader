@@ -37,6 +37,7 @@ class Entity implements JsonSerializable, ToArrayInterface
 
     /**
      * @return array
+     * @psalm-api
      */
     public function __toArray(): array
     {
@@ -68,6 +69,8 @@ class Entity implements JsonSerializable, ToArrayInterface
      */
     private function makeMethodName(string $field, string $prefix): string
     {
-        return $prefix . ucfirst(preg_replace_callback('/\_+(.)/ui', function($a) {return  strtoupper($a[1]);}, $field));
+        return $prefix . ucfirst(preg_replace_callback('/\_+(.)/ui', function ($a) {
+                return strtoupper($a[1]);
+            }, $field));
     }
 }

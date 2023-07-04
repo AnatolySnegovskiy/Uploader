@@ -12,15 +12,17 @@
   "require": {
     "php": ">=7.2.0",
     "ext-json": "*",
+    "ext-fileinfo": "*",
     "james-heinrich/getid3": "^1.9",
-    "true/punycode": "~2.0"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^7"
+    "opis/uri": "1.x-dev"
   },
   "autoload": {
     "psr-4": {"CarrionGrow\\Uploader\\": "src/"},
     "exclude-from-classmap": ["/test/"]
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "require-dev": {
+    "phpunit/phpunit": "9.6.x-dev",
+    "vimeo/psalm": "5.x-dev"
+  }
 }

@@ -25,7 +25,7 @@ class ImageException
         return self::exception(sprintf('The image height value is less than the permitted size: %d px', $height));
     }
 
-    static private function exception($message): Exception
+    static private function exception(string $message): Exception
     {
         return new Exception(Code::RESOLUTION, $message);
     }

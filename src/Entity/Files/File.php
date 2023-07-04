@@ -34,6 +34,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getTempPath(): string
     {
@@ -42,6 +43,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return float
+     * @psalm-api
      */
     public function getSize(): float
     {
@@ -50,6 +52,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getOriginalName(): string
     {
@@ -58,6 +61,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getExtension(): string
     {
@@ -66,6 +70,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getType(): string
     {
@@ -74,6 +79,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getName(): string
     {
@@ -82,6 +88,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getFileDir(): string
     {
@@ -90,6 +97,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getFilePath(): string
     {
@@ -98,6 +106,7 @@ class File extends Entity implements UploadHandlerInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getRawName(): string
     {
@@ -141,6 +150,39 @@ class File extends Entity implements UploadHandlerInterface
     }
 
     /**
+     * @return void
+     * @throws Exception
+     */
+    private function validateFileType()
+    {
+        $allowedTypes = $this->config->getAllowedTypes();
+
+        if ($allowedTypes === '*') {
+            return;
+        }
+
+        if (empty($allowedTypes) or !is_array($allowedTypes))
+            throw new Exception(Code::FILETYPE);
+
+        foreach ($allowedTypes as $allowed_type) {
+            if (!isset(Mimes::EXTENSION_LIST[$allowed_type])) {
+                continue;
+            }
+
+            $mime = Mimes::EXTENSION_LIST[$allowed_type];
+
+            if (
+                (is_array($mime) && in_array($this->type, $mime, TRUE)) ||
+                $mime === $this->type
+            ) {
+                return;
+            }
+        }
+
+        throw new Exception(Code::FILETYPE);
+    }
+
+    /**
      * @param $filename
      * @return string
      */
@@ -175,39 +217,6 @@ class File extends Entity implements UploadHandlerInterface
         $ext = $this->config->isFileExtToLower() ? strtolower(end($x)) : end($x);
 
         return '.' . $ext;
-    }
-
-    /**
-     * @return bool
-     * @throws Exception
-     */
-    public function validateFileType(): bool
-    {
-        $allowedTypes = $this->config->getAllowedTypes();
-
-        if ($allowedTypes === '*') {
-            return TRUE;
-        }
-
-        if (empty($allowedTypes) or !is_array($allowedTypes))
-            throw new Exception(Code::FILETYPE);
-
-        foreach ($allowedTypes as $allowed_type) {
-            if (!isset(Mimes::EXTENSION_LIST[$allowed_type])) {
-                continue;
-            }
-
-            $mime = Mimes::EXTENSION_LIST[$allowed_type];
-
-            if (
-                (is_array($mime) && in_array($this->type, $mime, TRUE)) ||
-                $mime === $this->type
-            ) {
-                return true;
-            }
-        }
-
-        throw new Exception(Code::FILETYPE);
     }
 
     /**
@@ -246,7 +255,7 @@ class File extends Entity implements UploadHandlerInterface
         $path = $this->config->getUploadPath();
 
         if ($this->config->isEncryptName()) {
-            $filename = md5(uniqid(mt_rand()));
+            $filename = md5(uniqid((string)mt_rand()));
         }
 
         if ($this->config->isOverwrite() || !file_exists($path . $filename . $this->extension)) {
@@ -265,7 +274,7 @@ class File extends Entity implements UploadHandlerInterface
         }
 
         if ($newFilename === '')
-            throw new Exception('The file name you submitted already exists on the server', 2011);
+            throw new Exception(2011, 'The file name you submitted already exists on the server');
 
         return $newFilename;
     }

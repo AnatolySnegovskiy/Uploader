@@ -45,7 +45,7 @@ class VideoException
         return new Exception(Code::VIDEO_BITRATE, sprintf('The video bitrate value is less than the permitted: %d', $bitrate));
     }
 
-    static private function exception($message): Exception
+    static private function exception(string $message): Exception
     {
         return new Exception(Code::RESOLUTION, $message);
     }

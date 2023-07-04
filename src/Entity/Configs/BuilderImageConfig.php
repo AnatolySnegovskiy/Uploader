@@ -19,6 +19,7 @@ class BuilderImageConfig extends ImageConfig
 
     /**
      * @return ConfigCollection
+     * @psalm-api
      */
     public function save(): ConfigCollection
     {

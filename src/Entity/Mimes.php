@@ -188,6 +188,7 @@ class Mimes
     /**
      * @param string $type
      * @return bool
+     * @psalm-api
      */
     static public function isImage(string $type): bool
     {
@@ -197,13 +198,19 @@ class Mimes
     /**
      * @param string $type
      * @return bool
+     * @psalm-api
      */
     static public function isVideo(string $type): bool
     {
         return in_array($type, self::VIDEOS);
     }
 
-    static public function getFileType($file): string
+    /**
+     * @param array $file
+     * @return string
+     * @psalm-api
+     */
+    static public function getFileType(array $file): string
     {
         $fileType = self::getFileMimeType($file);
         $fileType = preg_replace('/^(.+?);.*$/', '\\1', $fileType);
@@ -211,19 +218,19 @@ class Mimes
     }
 
     /**
-     * @param $file
+     * @param array $file
      * @return string
      */
-    static private function getFileMimeType($file): string
+    static private function getFileMimeType(array $file): string
     {
         $regexp = '/^([a-z\-]+\/[a-z0-9\-\.\+]+)(;\s.+)?$/';
 
         if (function_exists('finfo_file')) {
-            $finfo = @finfo_open(FILEINFO_MIME);
+            $fileInfo = @finfo_open(FILEINFO_MIME);
 
-            if (is_resource($finfo)) {
-                $mime = @finfo_file($finfo, $file['tmp_name']);
-                finfo_close($finfo);
+            if (is_resource($fileInfo)) {
+                $mime = @finfo_file($fileInfo, $file['tmp_name']);
+                finfo_close($fileInfo);
 
                 if (is_string($mime) && preg_match($regexp, $mime, $matches)) {
                     return $matches[1];
@@ -246,7 +253,7 @@ class Mimes
 
             if (!ini_get('safe_mode') && function_exists('shell_exec')) {
                 $mime = @shell_exec($cmd);
-                if (strlen($mime) > 0) {
+                if (is_string($mime) && strlen($mime) > 0) {
                     $mime = explode("\n", trim($mime));
                     if (preg_match($regexp, $mime[(count($mime) - 1)], $matches)) {
                         return $matches[1];

@@ -2,7 +2,7 @@
 
 namespace CarrionGrow\Uploader\Utilities;
 
-use TrueBV\Punycode;
+use Opis\Uri\Punycode;
 
 class UrlHelper
 {
@@ -48,10 +48,14 @@ class UrlHelper
      */
     static public function toPunycode(string $url): string
     {
-        return (new Punycode())->encode($url);
+        return Punycode::encode($url);
     }
 
-    static public function urlDecode($url): string
+    /**
+     * @param string $url
+     * @return string
+     */
+    static public function urlDecode(string $url): string
     {
         return rawurldecode($url);
     }
@@ -59,6 +63,7 @@ class UrlHelper
     /**
      * @param string $url
      * @return string
+     * @psalm-api
      */
     static public function punycodeDecode(string $url): string
     {
@@ -66,7 +71,7 @@ class UrlHelper
         $host = self::getHost($url);
 
         try {
-            $url = self::urlDecode(str_replace($host, (new Punycode())->decode($host), $url));
+            $url = self::urlDecode(str_replace($host, Punycode::decode($host), $url));
         } catch (\Exception $e) {
             $url = self::urlDecode($url);
         }
@@ -89,9 +94,9 @@ class UrlHelper
 
     /**
      * @param string $url
-     * @return array|false|int|string|null
+     * @return string
      */
-    static private function getHost(string $url)
+    static private function getHost(string $url): string
     {
         if (!preg_match('/\/\//i', $url)) {
             $host = parse_url(('//' . $url), PHP_URL_HOST);

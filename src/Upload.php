@@ -12,10 +12,13 @@ use CarrionGrow\Uploader\Exception\FilesException;
 use CarrionGrow\Uploader\Factories\FileFactories;
 use CarrionGrow\Uploader\Utilities\UrlHelper;
 
+/**
+ * @psalm-api
+ */
 class Upload
 {
     /** @var array */
-    private $temp;
+    private $temp = [];
     /** @var ConfigCollection */
     private $configs;
 
@@ -26,6 +29,7 @@ class Upload
 
     /**
      * @return ConfigCollection
+     * @psalm-api
      */
     public function getConfigs(): ConfigCollection
     {
@@ -35,6 +39,7 @@ class Upload
     /**
      * @param ConfigCollection $configs
      * @return $this
+     * @psalm-api
      */
     public function setConfigs(ConfigCollection $configs): Upload
     {
@@ -46,6 +51,7 @@ class Upload
      * @return FileCollection
      * @throws Exception
      * @throws FilesException
+     * @psalm-api
      */
     public function uploadAll(): FileCollection
     {
@@ -56,6 +62,7 @@ class Upload
      * @return FileCollection
      * @throws Exception
      * @throws FilesException
+     * @psalm-api
      */
     public function uploadFiles(): FileCollection
     {
@@ -66,6 +73,7 @@ class Upload
      * @return FileCollection
      * @throws Exception
      * @throws FilesException
+     * @psalm-api
      */
     public function uploadPost(): FileCollection
     {
@@ -76,6 +84,7 @@ class Upload
      * @return FileCollection
      * @throws Exception
      * @throws FilesException
+     * @psalm-api
      */
     public function uploadGet(): FileCollection
     {
@@ -98,10 +107,10 @@ class Upload
             try {
                 $file = $this->doUpload($config, $item);
                 $this->moveUploadedFile($file);
-                $array->set($key, $file);
+                $array->setFile($key, $file);
             } catch (Exception $exception) {
                 if ($config->isSkipError()) {
-                    $array->set($key, $exception);
+                    $array->setFile($key, $exception);
                 } else {
                     throw $exception;
                 }
@@ -135,13 +144,14 @@ class Upload
     private function doUpload(Config $config, array $file): File
     {
         if (!empty($file['error'])) {
-            throw new FilesException($file['error'] ?? 4);
+            throw new FilesException((int)$file['error']);
         }
 
         return (new FileFactories($this->validateUploadPath($config)))->init($file);
     }
 
     /**
+     * @return void
      * @throws Exception
      */
     private function moveUploadedFile(File $file)
@@ -155,7 +165,6 @@ class Upload
 
     /**
      * @return array
-     * @throws Exception
      */
     private function reArrayPost(): array
     {
@@ -164,7 +173,6 @@ class Upload
 
     /**
      * @return array
-     * @throws Exception
      */
     private function reArrayGet(): array
     {
@@ -174,7 +182,6 @@ class Upload
     /**
      * @param array $linkList
      * @return array
-     * @throws Exception
      */
     private function linksToFilesObject(array $linkList): array
     {
@@ -185,7 +192,7 @@ class Upload
             $link = UrlHelper::toUrl($link);
 
             if (!filter_var($link, FILTER_VALIDATE_URL)) {
-               continue;
+                continue;
             }
 
             $codeError = 0;
@@ -212,7 +219,7 @@ class Upload
                 [
                     'name' => $name,
                     'type' => $headers['content-type'] ?? '',
-                    'tmp_name' => $path ?? '',
+                    'tmp_name' => $path,
                     'error' => $codeError,
                     'size' => $headers['content-length'] ?? '',
                 ];
@@ -226,6 +233,8 @@ class Upload
      */
     private function reArrayFiles(): array
     {
+        /** @var mixed $_FILES */
+
         $result = [];
 
         foreach ($_FILES ?? [] as $postKey => $item) {
@@ -292,7 +301,7 @@ class Upload
         }
 
         if (is_dir($file)) {
-            $file = rtrim($file, '/') . '/' . md5(mt_rand());
+            $file = rtrim($file, '/') . '/' . md5((string)mt_rand());
 
             if (($fp = @fopen($file, 'ab')) === false) {
                 return false;
@@ -318,10 +327,18 @@ class Upload
      */
     private function getHeaders(string $link): array
     {
-        foreach (get_headers($link, true) as $key => $item) {
+        $headers = [];
+
+        $sourceHeader = get_headers($link, 1);
+
+        if (!$sourceHeader) {
+            return $headers;
+        }
+
+        foreach ($sourceHeader as $key => $item) {
             $headers[strtolower($key)] = is_array($item) ? end($item) : $item;
         }
 
-        return $headers ?? [];
+        return $headers;
     }
 }

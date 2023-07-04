@@ -3,7 +3,6 @@
 namespace CarrionGrow\Uploader\Entity\Configs;
 
 use CarrionGrow\Uploader\Entity\Files\Image;
-use phpDocumentor\Reflection\Types\This;
 
 class ImageConfig extends Config
 {
@@ -24,6 +23,7 @@ class ImageConfig extends Config
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMaxWidth(): int
     {
@@ -33,6 +33,7 @@ class ImageConfig extends Config
     /**
      * @param int $maxWidth
      * @return self
+     * @psalm-api
      */
     public function setMaxWidth(int $maxWidth): self
     {
@@ -42,6 +43,7 @@ class ImageConfig extends Config
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMaxHeight(): int
     {
@@ -51,6 +53,7 @@ class ImageConfig extends Config
     /**
      * @param int $maxHeight
      * @return self
+     * @psalm-api
      */
     public function setMaxHeight(int $maxHeight): self
     {
@@ -60,6 +63,7 @@ class ImageConfig extends Config
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMinWidth(): int
     {
@@ -69,6 +73,7 @@ class ImageConfig extends Config
     /**
      * @param int $minWidth
      * @return self
+     * @psalm-api
      */
     public function setMinWidth(int $minWidth): self
     {
@@ -78,6 +83,7 @@ class ImageConfig extends Config
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMinHeight(): int
     {
@@ -87,6 +93,7 @@ class ImageConfig extends Config
     /**
      * @param int $minHeight
      * @return self
+     * @psalm-api
      */
     public function setMinHeight(int $minHeight): self
     {

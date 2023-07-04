@@ -2,52 +2,78 @@
 
 namespace CarrionGrow\Uploader\Collections;
 
-use CarrionGrow\Uploader\Entity\Configs\BuilderConfig;
 use CarrionGrow\Uploader\Entity\Configs\Config;
-use CarrionGrow\Uploader\Entity\Entity;
 use CarrionGrow\Uploader\Factories\ConfigFactories;
+use Exception;
 
 class ConfigCollection extends ArrayCollection
 {
     /**
      * @param string $key
      * @param Config $value
+     * @psalm-api
      */
-    public function set($key, $value)
+    public function setConfig(string $key, Config $value)
     {
         parent::set($key, $value);
     }
 
     /**
      * @return Config
+     * @psalm-api
+     * @throws Exception
      */
     public function first(): Config
     {
         $this->addIsEmpty();
-        return parent::first();
+
+        $config = parent::first();
+
+        if (!($config instanceof Config)) {
+            throw new Exception("Collection Error");
+        }
+
+        return $config;
     }
 
     /**
      * @return Config
+     * @psalm-api
+     * @throws Exception
      */
     public function current(): Config
     {
         $this->addIsEmpty();
-        return parent::current();
+        $config = parent::current();
+
+        if (!($config instanceof Config)) {
+            throw new Exception("Collection Error");
+        }
+
+        return $config;
     }
 
     /**
      * @return Config
+     * @psalm-api
+     * @throws Exception
      */
     public function last(): Config
     {
         $this->addIsEmpty();
-        return parent::last();
+        $config = parent::last();
+
+        if (!($config instanceof Config)) {
+            throw new Exception("Collection Error");
+        }
+
+        return $config;
     }
 
     /**
-     * @param $key
+     * @param mixed $key
      * @return Config|null
+     * @psalm-api
      */
     public function get($key): ?Config
     {
@@ -56,17 +82,26 @@ class ConfigCollection extends ArrayCollection
 
     /**
      * @return Config[]
+     * @psalm-api
      */
     public function toArray(): array
     {
         return parent::toArray();
     }
 
+    /**
+     * @param string $inputName
+     * @return ConfigFactories
+     * @psalm-api
+     */
     public function new(string $inputName): ConfigFactories
     {
         return new ConfigFactories($this, $inputName);
     }
 
+    /**
+     * @return void
+     */
     private function addIsEmpty()
     {
         if ($this->isEmpty()) {

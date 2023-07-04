@@ -2,9 +2,7 @@
 
 namespace CarrionGrow\Uploader\Entity\Files;
 
-use CarrionGrow\Uploader\Entity\Configs\Config;
 use CarrionGrow\Uploader\Entity\Configs\ImageConfig;
-use CarrionGrow\Uploader\Entity\Files\File;
 use CarrionGrow\Uploader\Exception\ImageException;
 
 class Image extends File
@@ -22,6 +20,7 @@ class Image extends File
 #region getter
     /**
      * @return int
+     * @psalm-api
      */
     public function getWidth(): int
     {
@@ -30,6 +29,7 @@ class Image extends File
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getHeight(): int
     {
@@ -38,6 +38,7 @@ class Image extends File
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getImageType(): string
     {
@@ -46,6 +47,7 @@ class Image extends File
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getResolution(): string
     {
@@ -82,8 +84,8 @@ class Image extends File
 
         $types = [1 => 'gif', 2 => 'jpeg', 3 => 'png'];
 
-        $this->width = (int)$dimension[0];
-        $this->height = (int)$dimension[1];
+        $this->width = $dimension[0];
+        $this->height = $dimension[1];
         $this->imageType = $types[$dimension[2]] ?? 'unknown';
         $this->resolution = sprintf('%dx%d', $this->width, $this->height);
     }

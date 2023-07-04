@@ -32,19 +32,11 @@ class Config extends Entity
     private $maxFilename = 0;
     /** @var int */
     private $maxFilenameIncrement = 100;
-    /** @var bool  */
+    /** @var bool */
     private $extensionByMimes = true;
 
     /** @var UploadHandlerInterface */
     protected $handler;
-
-    /**
-     * @return mixed
-     */
-    public function getHandler(): UploadHandlerInterface
-    {
-        return $this->handler;
-    }
 
     public function __construct()
     {
@@ -53,7 +45,17 @@ class Config extends Entity
     }
 
     /**
+     * @return mixed
+     * @psalm-api
+     */
+    public function getHandler(): UploadHandlerInterface
+    {
+        return $this->handler;
+    }
+
+    /**
      * @return string
+     * @psalm-api
      */
     public function getUploadPath(): string
     {
@@ -63,6 +65,7 @@ class Config extends Entity
     /**
      * @param string $uploadPath
      * @return self
+     * @psalm-api
      */
     public function setUploadPath(string $uploadPath): self
     {
@@ -72,6 +75,7 @@ class Config extends Entity
 
     /**
      * @return string|array
+     * @psalm-api
      */
     public function getAllowedTypes()
     {
@@ -81,6 +85,7 @@ class Config extends Entity
     /**
      * @param string|array $allowedTypes
      * @return self
+     * @psalm-api
      */
     public function setAllowedTypes($allowedTypes): self
     {
@@ -94,6 +99,7 @@ class Config extends Entity
 
     /**
      * @return bool
+     * @psalm-api
      */
     public function isFileExtToLower(): bool
     {
@@ -103,6 +109,7 @@ class Config extends Entity
     /**
      * @param bool $fileExtToLower
      * @return self
+     * @psalm-api
      */
     public function setFileExtToLower(bool $fileExtToLower): self
     {
@@ -112,6 +119,7 @@ class Config extends Entity
 
     /**
      * @return bool
+     * @psalm-api
      */
     public function isOverwrite(): bool
     {
@@ -121,6 +129,7 @@ class Config extends Entity
     /**
      * @param bool $overwrite
      * @return self
+     * @psalm-api
      */
     public function setOverwrite(bool $overwrite): self
     {
@@ -130,6 +139,7 @@ class Config extends Entity
 
     /**
      * @return bool
+     * @psalm-api
      */
     public function isEncryptName(): bool
     {
@@ -139,6 +149,7 @@ class Config extends Entity
     /**
      * @param bool $encryptName
      * @return self
+     * @psalm-api
      */
     public function setEncryptName(bool $encryptName): self
     {
@@ -148,6 +159,7 @@ class Config extends Entity
 
     /**
      * @return bool
+     * @psalm-api
      */
     public function isRemoveSpaces(): bool
     {
@@ -157,6 +169,7 @@ class Config extends Entity
     /**
      * @param bool $removeSpaces
      * @return self
+     * @psalm-api
      */
     public function setRemoveSpaces(bool $removeSpaces): self
     {
@@ -166,6 +179,7 @@ class Config extends Entity
 
     /**
      * @return bool
+     * @psalm-api
      */
     public function isModMimeFix(): bool
     {
@@ -175,6 +189,7 @@ class Config extends Entity
     /**
      * @param bool $modMimeFix
      * @return self
+     * @psalm-api
      */
     public function setModMimeFix(bool $modMimeFix): self
     {
@@ -184,6 +199,7 @@ class Config extends Entity
 
     /**
      * @return bool
+     * @psalm-api
      */
     public function isSkipError(): bool
     {
@@ -193,6 +209,7 @@ class Config extends Entity
     /**
      * @param bool $skipError
      * @return self
+     * @psalm-api
      */
     public function setSkipError(bool $skipError): self
     {
@@ -202,6 +219,7 @@ class Config extends Entity
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMaxSize(): int
     {
@@ -211,6 +229,7 @@ class Config extends Entity
     /**
      * @param int $maxSize
      * @return self
+     * @psalm-api
      */
     public function setMaxSize(int $maxSize): self
     {
@@ -220,6 +239,7 @@ class Config extends Entity
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getFileName(): string
     {
@@ -229,6 +249,7 @@ class Config extends Entity
     /**
      * @param string $fileName
      * @return self
+     * @psalm-api
      */
     public function setFileName(string $fileName): self
     {
@@ -238,6 +259,7 @@ class Config extends Entity
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMaxFilename(): int
     {
@@ -247,6 +269,7 @@ class Config extends Entity
     /**
      * @param int $maxFilename
      * @return self
+     * @psalm-api
      */
     public function setMaxFilename(int $maxFilename): self
     {
@@ -256,6 +279,7 @@ class Config extends Entity
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMaxFilenameIncrement(): int
     {
@@ -265,6 +289,7 @@ class Config extends Entity
     /**
      * @param int $maxFilenameIncrement
      * @return self
+     * @psalm-api
      */
     public function setMaxFilenameIncrement(int $maxFilenameIncrement): self
     {
@@ -274,6 +299,7 @@ class Config extends Entity
 
     /**
      * @return bool
+     * @psalm-api
      */
     public function isExtensionByMimes(): bool
     {
@@ -283,6 +309,7 @@ class Config extends Entity
     /**
      * @param bool $extensionByMimes
      * @return $this
+     * @psalm-api
      */
     public function setExtensionByMimes(bool $extensionByMimes): self
     {

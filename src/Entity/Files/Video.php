@@ -10,13 +10,13 @@ use getID3;
 
 class Video extends File
 {
-    /** @var int  */
+    /** @var int */
     protected $width;
-    /** @var int  */
+    /** @var int */
     protected $height;
-    /** @var int  */
+    /** @var int */
     protected $duration;
-    /** @var int  */
+    /** @var int */
     protected $bitrate;
     /** @var string */
     protected $videoCodec;
@@ -26,8 +26,10 @@ class Video extends File
     protected $config;
 
 #region getter
+
     /**
      * @return int
+     * @psalm-api
      */
     public function getWidth(): int
     {
@@ -36,6 +38,7 @@ class Video extends File
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getHeight(): int
     {
@@ -44,6 +47,7 @@ class Video extends File
 
     /**
      * @return float
+     * @psalm-api
      */
     public function getDuration(): float
     {
@@ -52,6 +56,7 @@ class Video extends File
 
     /**
      * @return float
+     * @psalm-api
      */
     public function getBitrate(): float
     {
@@ -60,6 +65,7 @@ class Video extends File
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getVideoCodec(): string
     {
@@ -68,11 +74,13 @@ class Video extends File
 
     /**
      * @return string
+     * @psalm-api
      */
     public function getAudioCodec(): string
     {
         return $this->audioCodec;
     }
+
 #endregion
 
     public function __construct(VideoConfig $config)
@@ -80,6 +88,11 @@ class Video extends File
         parent::__construct($config);
     }
 
+    /**
+     * @param array $file
+     * @return void
+     * @throws Exception
+     */
     public function behave(array $file)
     {
         parent::behave($file);
@@ -89,8 +102,8 @@ class Video extends File
         $this->bitrate = ($meta['bitrate'] ?? 0) / 1000;
         $this->videoCodec = $meta['video']['fourcc_lookup'] ?? '';
         $this->audioCodec = $meta['audio']['codec'] ?? '';
-        $this->width = (int) ($meta['video']['resolution_x'] ?? 0);
-        $this->height = (int) ($meta['video']['resolution_y'] ?? 0);
+        $this->width = (int)($meta['video']['resolution_x'] ?? 0);
+        $this->height = (int)($meta['video']['resolution_y'] ?? 0);
 
         if ($this->config->getMaxDuration() > 0 && $this->duration > $this->config->getMaxDuration())
             throw VideoException::durationLarge($this->config->getMaxWidth());
@@ -122,6 +135,7 @@ class Video extends File
 
     /**
      * @throws Exception
+     * @return void
      */
     private function validateVideoCodec()
     {
@@ -131,7 +145,7 @@ class Video extends File
             return;
         }
 
-        foreach ($allowedCodec as $item) {
+        foreach ((array)$allowedCodec as $item) {
             if (strpos(strtolower($this->videoCodec), strtolower($item)) !== false) {
                 return;
             }
@@ -142,6 +156,7 @@ class Video extends File
 
     /**
      * @throws Exception
+     * @return void
      */
     private function validateAudioCodec()
     {
@@ -151,7 +166,7 @@ class Video extends File
             return;
         }
 
-        foreach ($allowedCodec as $item) {
+        foreach ((array)$allowedCodec as $item) {
             if (strpos(strtolower($this->audioCodec), strtolower($item)) !== false) {
                 return;
             }

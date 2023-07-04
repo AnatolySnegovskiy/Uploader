@@ -19,6 +19,7 @@ class BuilderConfig extends Config
 
     /**
      * @return ConfigCollection
+     * @psalm-api
      */
     public function save(): ConfigCollection
     {

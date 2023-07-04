@@ -3,25 +3,24 @@
 namespace CarrionGrow\Uploader\Collections;
 
 use ArrayIterator;
-use CarrionGrow\Uploader\Entity\Configs\Config;
-use CarrionGrow\Uploader\Entity\Entity;
 use Closure;
 
-class ArrayCollection implements CollectionInterface
+abstract class ArrayCollection implements CollectionInterface
 {
     /*** @var array */
     private $elements;
 
     /**
-     * @param array $elements
+     * @param array $_elements
      */
-    public function __construct(array $elements = [])
+    public function __construct(array $_elements = [])
     {
-        $this->elements = $elements;
+        $this->elements = $_elements;
     }
 
     /**
      * @return array
+     * @psalm-api
      */
     public function toArray(): array
     {
@@ -30,6 +29,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return false|mixed
+     * @psalm-api
      */
     public function first()
     {
@@ -38,15 +38,17 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @param array $elements
-     * @return $this
+     * @return static
+     * @psalm-api
      */
-    protected function createFrom(array $elements)
+    protected function createFrom(array $elements): ArrayCollection
     {
         return new static($elements);
     }
 
     /**
      * @return false|mixed
+     * @psalm-api
      */
     public function last()
     {
@@ -55,6 +57,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return int|string|null
+     * @psalm-api
      */
     public function key()
     {
@@ -63,6 +66,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return false|mixed
+     * @psalm-api
      */
     public function next()
     {
@@ -71,6 +75,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return false|mixed
+     * @psalm-api
      */
     public function current()
     {
@@ -78,12 +83,13 @@ class ArrayCollection implements CollectionInterface
     }
 
     /**
-     * @param $key
+     * @param mixed $key
      * @return mixed|null
+     * @psalm-api
      */
     public function remove($key)
     {
-        if (! isset($this->elements[$key]) && ! array_key_exists($key, $this->elements)) {
+        if (!isset($this->elements[$key]) && !array_key_exists($key, $this->elements)) {
             return null;
         }
 
@@ -94,8 +100,9 @@ class ArrayCollection implements CollectionInterface
     }
 
     /**
-     * @param $element
+     * @param mixed $element
      * @return bool
+     * @psalm-api
      */
     public function removeElement($element): bool
     {
@@ -113,6 +120,7 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param mixed $offset
      * @return bool
+     * @psalm-api
      */
     public function offsetExists($offset): bool
     {
@@ -122,6 +130,7 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param mixed $offset
      * @return mixed|null
+     * @psalm-api
      */
     public function offsetGet($offset)
     {
@@ -131,10 +140,11 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param mixed $offset
      * @param mixed $value
+     * @psalm-api
      */
     public function offsetSet($offset, $value)
     {
-        if (! isset($offset)) {
+        if (!isset($offset)) {
             $this->add($value);
 
             return;
@@ -145,6 +155,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @param mixed $offset
+     * @psalm-api
      */
     public function offsetUnset($offset)
     {
@@ -152,8 +163,9 @@ class ArrayCollection implements CollectionInterface
     }
 
     /**
-     * @param $key
+     * @param mixed $key
      * @return bool
+     * @psalm-api
      */
     public function containsKey($key): bool
     {
@@ -161,8 +173,9 @@ class ArrayCollection implements CollectionInterface
     }
 
     /**
-     * @param $element
+     * @param mixed $element
      * @return bool
+     * @psalm-api
      */
     public function contains($element): bool
     {
@@ -172,6 +185,7 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param Closure $p
      * @return bool
+     * @psalm-api
      */
     public function exists(Closure $p): bool
     {
@@ -185,8 +199,9 @@ class ArrayCollection implements CollectionInterface
     }
 
     /**
-     * @param $element
+     * @param mixed $element
      * @return false|int|string
+     * @psalm-api
      */
     public function indexOf($element)
     {
@@ -194,8 +209,9 @@ class ArrayCollection implements CollectionInterface
     }
 
     /**
-     * @param $key
+     * @param mixed $key
      * @return mixed|null
+     * @psalm-api
      */
     public function get($key)
     {
@@ -204,6 +220,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return array
+     * @psalm-api
      */
     public function getKeys(): array
     {
@@ -212,6 +229,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return array
+     * @psalm-api
      */
     public function getValues(): array
     {
@@ -220,6 +238,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return int
+     * @psalm-api
      */
     public function count(): int
     {
@@ -229,15 +248,18 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param mixed $key
      * @param mixed $value
+     * @return void
+     * @psalm-api
      */
-    public function set($key, $value)
+    protected function set($key, $value)
     {
         $this->elements[$key] = $value;
     }
 
     /**
-     * @param $element
+     * @param mixed $element
      * @return bool
+     * @psalm-api
      */
     public function add($element): bool
     {
@@ -248,6 +270,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return bool
+     * @psalm-api
      */
     public function isEmpty(): bool
     {
@@ -256,6 +279,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return ArrayIterator
+     * @psalm-api
      */
     public function getIterator(): ArrayIterator
     {
@@ -265,6 +289,7 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param Closure $func
      * @return $this
+     * @psalm-api
      */
     public function map(Closure $func): ArrayCollection
     {
@@ -274,6 +299,7 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param Closure $p
      * @return $this
+     * @psalm-api
      */
     public function filter(Closure $p): ArrayCollection
     {
@@ -283,11 +309,12 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param Closure $p
      * @return bool
+     * @psalm-api
      */
     public function forAll(Closure $p): bool
     {
         foreach ($this->elements as $key => $element) {
-            if (! $p($key, $element)) {
+            if (!$p($key, $element)) {
                 return false;
             }
         }
@@ -298,6 +325,7 @@ class ArrayCollection implements CollectionInterface
     /**
      * @param Closure $p
      * @return array
+     * @psalm-api
      */
     public function partition(Closure $p): array
     {
@@ -316,6 +344,7 @@ class ArrayCollection implements CollectionInterface
 
     /**
      * @return string
+     * @psalm-api
      */
     public function __toString(): string
     {
@@ -323,17 +352,22 @@ class ArrayCollection implements CollectionInterface
     }
 
 
+    /**
+     * @return void
+     * @psalm-api
+     */
     public function clear()
     {
         $this->elements = [];
     }
 
     /**
-     * @param $offset
-     * @param null $length
+     * @param int $offset
+     * @param int|null $length
      * @return array
+     * @psalm-api
      */
-    public function slice($offset, $length = null): array
+    public function slice(int $offset, int $length = null): array
     {
         return array_slice($this->elements, $offset, $length, true);
     }

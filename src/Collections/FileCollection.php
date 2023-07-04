@@ -11,47 +11,62 @@ use CarrionGrow\Uploader\Exception\Exception;
 class FileCollection extends ArrayCollection
 {
     /**
+     * @param string $key
+     * @param File|Exception $value
+     * @psalm-api
+     */
+    public function setFile(string $key, $value)
+    {
+        parent::set($key, $value);
+    }
+
+    /**
      * @return Exception[]
+     * @psalm-api
      */
     public function getErrors(): array
     {
-        return $this->filter(function ($element) {
+        return $this->filter(function ($element) : bool {
             return $element instanceof Exception;
         })->toArray();
     }
 
     /**
      * @return Image[]
+     * @psalm-api
      */
     public function getImages(): array
     {
-        return $this->filter(function ($element) {
+        return $this->filter(function ($element) : bool {
             return $element instanceof Image;
         })->toArray();
     }
 
     /**
      * @return Video[]
+     * @psalm-api
      */
     public function getVideos(): array
     {
-        return $this->filter(function ($element) {
+        return $this->filter(function ($element): bool {
             return $element instanceof Video;
         })->toArray();
     }
 
     /**
      * @return File[]
+     * @psalm-api
      */
     public function getFiles(): array
     {
-        return $this->filter(function ($element) {
+        return $this->filter(function ($element): bool {
             return $element instanceof File;
         })->toArray();
     }
 
     /**
      * @return ToArrayInterface[]
+     * @psalm-api
      */
     public function toArray(): array
     {
@@ -61,6 +76,7 @@ class FileCollection extends ArrayCollection
     /**
      * @param $key
      * @return File|null
+     * @psalm-api
      */
     public function get($key): ?File
     {

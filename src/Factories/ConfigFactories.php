@@ -18,26 +18,38 @@ class ConfigFactories
         $this->collection = $collection;
     }
 
+    /**
+     * @return BuilderConfig
+     * @psalm-api
+     */
     public function other(): BuilderConfig
     {
         $item = new BuilderConfig($this->collection);
-        $this->collection->set($this->key, $item);
+        $this->collection->setConfig($this->key, $item);
 
         return $item;
     }
 
+    /**
+     * @return BuilderImageConfig
+     * @psalm-api
+     */
     public function image(): BuilderImageConfig
     {
         $item = new BuilderImageConfig($this->collection);
-        $this->collection->set($this->key, $item);
+        $this->collection->setConfig($this->key, $item);
 
         return $item;
     }
 
+    /**
+     * @return BuilderVideoConfig
+     * @psalm-api
+     */
     public function video(): BuilderVideoConfig
     {
         $item = new BuilderVideoConfig($this->collection);
-        $this->collection->set($this->key, $item);
+        $this->collection->setConfig($this->key, $item);
 
         return $item;
     }

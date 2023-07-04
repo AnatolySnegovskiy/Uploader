@@ -26,6 +26,7 @@ class VideoConfig extends ImageConfig
     }
     /**
      * @return int
+     * @psalm-api
      */
     public function getMinBitrate(): int
     {
@@ -35,6 +36,7 @@ class VideoConfig extends ImageConfig
     /**
      * @param int $minBitrate
      * @return VideoConfig
+     * @psalm-api
      */
     public function setMinBitrate(int $minBitrate): self
     {
@@ -44,6 +46,7 @@ class VideoConfig extends ImageConfig
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMaxBitrate(): int
     {
@@ -53,6 +56,7 @@ class VideoConfig extends ImageConfig
     /**
      * @param int $maxBitrate
      * @return VideoConfig
+     * @psalm-api
      */
     public function setMaxBitrate(int $maxBitrate): self
     {
@@ -62,6 +66,7 @@ class VideoConfig extends ImageConfig
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMaxDuration(): int
     {
@@ -71,6 +76,7 @@ class VideoConfig extends ImageConfig
     /**
      * @param int $maxDuration
      * @return VideoConfig
+     * @psalm-api
      */
     public function setMaxDuration(int $maxDuration): self
     {
@@ -80,6 +86,7 @@ class VideoConfig extends ImageConfig
 
     /**
      * @return int
+     * @psalm-api
      */
     public function getMinDuration(): int
     {
@@ -89,6 +96,7 @@ class VideoConfig extends ImageConfig
     /**
      * @param int $minDuration
      * @return VideoConfig
+     * @psalm-api
      */
     public function setMinDuration(int $minDuration): self
     {
@@ -98,6 +106,7 @@ class VideoConfig extends ImageConfig
 
     /**
      * @return array|string
+     * @psalm-api
      */
     public function getVideoCodec()
     {
@@ -107,6 +116,7 @@ class VideoConfig extends ImageConfig
     /**
      * @param array|string $videoCodec
      * @return VideoConfig
+     * @psalm-api
      */
     public function setVideoCodec($videoCodec): self
     {
@@ -119,6 +129,7 @@ class VideoConfig extends ImageConfig
 
     /**
      * @return array|string
+     * @psalm-api
      */
     public function getAudioCodec()
     {
@@ -128,6 +139,7 @@ class VideoConfig extends ImageConfig
     /**
      * @param array|string $audioCodec
      * @return VideoConfig
+     * @psalm-api
      */
     public function setAudioCodec($audioCodec): self
     {

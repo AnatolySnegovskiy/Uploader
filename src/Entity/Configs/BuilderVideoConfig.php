@@ -19,6 +19,7 @@ class BuilderVideoConfig extends VideoConfig
 
     /**
      * @return ConfigCollection
+     * @psalm-api
      */
     public function save(): ConfigCollection
     {
