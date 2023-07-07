@@ -7,17 +7,18 @@ use CarrionGrow\Uploader\Exception\ImageException;
 
 class Image extends File
 {
-    /** @var int  */
+    /** @var int */
     protected $width;
-    /** @var int  */
+    /** @var int */
     protected $height;
-    /** @var string  */
+    /** @var string */
     protected $imageType;
-    /** @var string  */
+    /** @var string */
     protected $resolution;
     /** @var ImageConfig */
     protected $config;
 #region getter
+
     /**
      * @return int
      * @psalm-api
@@ -53,6 +54,7 @@ class Image extends File
     {
         return $this->resolution ?? '';
     }
+
 #endregion
 
     public function __construct(ImageConfig $config)
@@ -69,6 +71,11 @@ class Image extends File
         }
 
         $dimension = @getimagesize($this->getTempPath());
+
+        if (!$dimension || empty($dimension[0])) {
+            $this->imageType = $this->getExtension();
+            return;
+        }
 
         if ($this->config->getMaxWidth() > 0 && $dimension[0] > $this->config->getMaxWidth())
             throw ImageException::widthLarger($this->config->getMaxWidth());
