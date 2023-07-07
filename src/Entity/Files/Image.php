@@ -24,7 +24,7 @@ class Image extends File
      */
     public function getWidth(): int
     {
-        return $this->width;
+        return $this->width ?? 0;
     }
 
     /**
@@ -33,7 +33,7 @@ class Image extends File
      */
     public function getHeight(): int
     {
-        return $this->height;
+        return $this->height ?? 0;
     }
 
     /**
@@ -42,7 +42,7 @@ class Image extends File
      */
     public function getImageType(): string
     {
-        return $this->imageType;
+        return $this->imageType ?? '';
     }
 
     /**
@@ -51,7 +51,7 @@ class Image extends File
      */
     public function getResolution(): string
     {
-        return $this->resolution;
+        return $this->resolution ?? '';
     }
 #endregion
 

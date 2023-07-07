@@ -33,7 +33,7 @@ class Video extends File
      */
     public function getWidth(): int
     {
-        return $this->width;
+        return $this->width ?? 0;
     }
 
     /**
@@ -42,7 +42,7 @@ class Video extends File
      */
     public function getHeight(): int
     {
-        return $this->height;
+        return $this->height ?? 0;
     }
 
     /**
@@ -51,7 +51,7 @@ class Video extends File
      */
     public function getDuration(): float
     {
-        return $this->duration;
+        return $this->duration ?? 0;
     }
 
     /**
@@ -60,7 +60,7 @@ class Video extends File
      */
     public function getBitrate(): float
     {
-        return $this->bitrate;
+        return $this->bitrate ?? 0;
     }
 
     /**
@@ -69,7 +69,7 @@ class Video extends File
      */
     public function getVideoCodec(): string
     {
-        return $this->videoCodec;
+        return $this->videoCodec ?? '';
     }
 
     /**
@@ -78,7 +78,7 @@ class Video extends File
      */
     public function getAudioCodec(): string
     {
-        return $this->audioCodec;
+        return $this->audioCodec ?? '';
     }
 
 #endregion

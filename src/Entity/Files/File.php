@@ -38,7 +38,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getTempPath(): string
     {
-        return $this->tempPath;
+        return $this->tempPath ?? '';
     }
 
     /**
@@ -47,7 +47,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getSize(): float
     {
-        return $this->size;
+        return $this->size ?? 0;
     }
 
     /**
@@ -56,7 +56,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getOriginalName(): string
     {
-        return $this->originalName;
+        return $this->originalName ?? '';
     }
 
     /**
@@ -65,7 +65,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getExtension(): string
     {
-        return $this->extension;
+        return $this->extension ?? '';
     }
 
     /**
@@ -74,7 +74,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getType(): string
     {
-        return $this->type;
+        return $this->type ?? '';
     }
 
     /**
@@ -83,7 +83,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getName(): string
     {
-        return $this->name;
+        return $this->name ?? '';
     }
 
     /**
@@ -92,7 +92,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getFileDir(): string
     {
-        return $this->fileDir;
+        return $this->fileDir ?? '';
     }
 
     /**
@@ -101,7 +101,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getFilePath(): string
     {
-        return $this->filePath;
+        return $this->filePath ?? '';
     }
 
     /**
@@ -110,7 +110,7 @@ class File extends Entity implements UploadHandlerInterface
      */
     public function getRawName(): string
     {
-        return $this->rawName;
+        return $this->rawName ?? '';
     }
 #endregion
 
