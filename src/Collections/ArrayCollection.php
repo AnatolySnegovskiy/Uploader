@@ -251,7 +251,7 @@ abstract class ArrayCollection implements CollectionInterface
      * @return void
      * @psalm-api
      */
-    protected function set($key, $value)
+    public function set($key, $value)
     {
         $this->elements[$key] = $value;
     }
