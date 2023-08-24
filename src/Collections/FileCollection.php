@@ -75,7 +75,7 @@ class FileCollection extends ArrayCollection
 
     /**
      * @param $key
-     * @return File|null
+     * @return File|Exception|null
      * @psalm-api
      */
     public function get($key): ?File
