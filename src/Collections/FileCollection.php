@@ -78,7 +78,7 @@ class FileCollection extends ArrayCollection
      * @return File|Exception|null
      * @psalm-api
      */
-    public function get($key): ?File
+    public function get($key)
     {
         return parent::get($key);
     }
