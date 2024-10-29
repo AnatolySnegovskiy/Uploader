@@ -15,8 +15,12 @@ class FilesException extends Exception
             UPLOAD_ERR_NO_FILE => Code::NOT_FILE
         ];
 
-    public function __construct(int $code)
+    public function __construct(Code|int $code)
     {
-        parent::__construct(self::FILE_TO_UPLOAD[$code] ?? Code::NOT_FILE);
+        if (is_int($code)) {
+            $code = self::FILE_TO_UPLOAD[$code] ?? Code::NOT_FILE;
+        }
+
+        parent::__construct($code);
     }
 }

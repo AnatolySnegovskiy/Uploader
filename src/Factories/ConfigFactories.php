@@ -9,8 +9,8 @@ use CarrionGrow\Uploader\Entity\Configs\BuilderVideoConfig;
 
 class ConfigFactories
 {
-    private $collection;
-    private $key;
+    private ConfigCollection $collection;
+    private string $key;
 
     public function __construct(ConfigCollection $collection, string $key)
     {
@@ -19,7 +19,6 @@ class ConfigFactories
     }
 
     /**
-     * @return BuilderConfig
      * @psalm-api
      */
     public function other(): BuilderConfig
@@ -31,7 +30,6 @@ class ConfigFactories
     }
 
     /**
-     * @return BuilderImageConfig
      * @psalm-api
      */
     public function image(): BuilderImageConfig
@@ -43,7 +41,6 @@ class ConfigFactories
     }
 
     /**
-     * @return BuilderVideoConfig
      * @psalm-api
      */
     public function video(): BuilderVideoConfig

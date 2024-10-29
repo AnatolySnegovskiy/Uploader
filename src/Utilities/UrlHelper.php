@@ -2,18 +2,15 @@
 
 namespace CarrionGrow\Uploader\Utilities;
 
+use Exception;
 use Opis\Uri\Punycode;
 
 class UrlHelper
 {
-    const PATTERN_CHECK_DOMAIN =
-        '/^((https?:?\/\/|ftp:\/\/|:?\/\/)?([a-z0-9\-\_\.а-я]+)?[a-z0-9\_\-а-я]+(!?\.[a-zа-я]{2,4}))\/?/ui';
+    public const PATTERN_CHECK_DOMAIN =
+        '/^((https?:?\/\/|ftp:\/\/|:?\/\/)?([a-z0-9\-_.а-я]+)?[a-z0-9_\-а-я]+(!?\.[a-zа-я]{2,4}))\/?/ui';
 
-    /**
-     * @param string $url
-     * @return string
-     */
-    static public function toUrl(string $url): string
+    public static function toUrl(string $url): string
     {
         $tempUrl = $url;
         $url = trim(strip_tags($url));
@@ -35,44 +32,34 @@ class UrlHelper
                     ['!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]", "{", "}"],
                     rawurlencode(str_replace($host, self::toPunycode($host), $url))
                 );
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return $tempUrl;
         }
 
         return $url;
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
-    static public function toPunycode(string $url): string
+    public static function toPunycode(string $url): string
     {
         return Punycode::encode($url);
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
-    static public function urlDecode(string $url): string
+    public static function urlDecode(string $url): string
     {
         return rawurldecode($url);
     }
 
     /**
-     * @param string $url
-     * @return string
      * @psalm-api
      */
-    static public function punycodeDecode(string $url): string
+    public static function punycodeDecode(string $url): string
     {
         $original = $url;
         $host = self::getHost($url);
 
         try {
             $url = self::urlDecode(str_replace($host, Punycode::decode($host), $url));
-        } catch (\Exception $e) {
+        } catch (Exception) {
             $url = self::urlDecode($url);
         }
 
@@ -83,22 +70,14 @@ class UrlHelper
         }
     }
 
-    /**
-     * @param string $string
-     * @return false|int
-     */
-    public static function isContainsDomain(string $string)
+    public static function isContainsDomain(string $string): bool
     {
-        return preg_match(self::PATTERN_CHECK_DOMAIN, $string);
+        return !empty(preg_match(self::PATTERN_CHECK_DOMAIN, $string));
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
-    static private function getHost(string $url): string
+    private static function getHost(string $url): string
     {
-        if (!preg_match('/\/\//i', $url)) {
+        if (!preg_match('/\/\//', $url)) {
             $host = parse_url(('//' . $url), PHP_URL_HOST);
         } else {
             $host = parse_url($url, PHP_URL_HOST);

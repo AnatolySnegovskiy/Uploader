@@ -4,18 +4,21 @@ namespace CarrionGrow\Uploader\Collections;
 
 use CarrionGrow\Uploader\Entity\Files\File;
 use CarrionGrow\Uploader\Entity\Files\Image;
+use CarrionGrow\Uploader\Entity\Files\UploadHandlerInterface;
 use CarrionGrow\Uploader\Entity\Files\Video;
-use CarrionGrow\Uploader\Entity\ToArrayInterface;
 use CarrionGrow\Uploader\Exception\Exception;
 
+/**
+ * @template TKey extends string|int
+ * @template TValue extends UploadHandlerInterface|Exception
+ * @extends ArrayCollection<TKey, TValue>
+ */
 class FileCollection extends ArrayCollection
 {
     /**
-     * @param string $key
-     * @param File|Exception $value
      * @psalm-api
      */
-    public function setFile(string $key, $value)
+    public function setFile(string $key, UploadHandlerInterface|Exception $value): void
     {
         parent::set($key, $value);
     }
@@ -26,9 +29,7 @@ class FileCollection extends ArrayCollection
      */
     public function getErrors(): array
     {
-        return $this->filter(function ($element) : bool {
-            return $element instanceof Exception;
-        })->toArray();
+        return $this->filter(static fn (mixed $element): bool => $element instanceof Exception)->toArray();
     }
 
     /**
@@ -37,9 +38,7 @@ class FileCollection extends ArrayCollection
      */
     public function getImages(): array
     {
-        return $this->filter(function ($element) : bool {
-            return $element instanceof Image;
-        })->toArray();
+        return $this->filter(static fn (mixed $element): bool => $element instanceof Image)->toArray();
     }
 
     /**
@@ -48,9 +47,7 @@ class FileCollection extends ArrayCollection
      */
     public function getVideos(): array
     {
-        return $this->filter(function ($element): bool {
-            return $element instanceof Video;
-        })->toArray();
+        return $this->filter(static fn (mixed $element): bool => $element instanceof Video)->toArray();
     }
 
     /**
@@ -59,13 +56,10 @@ class FileCollection extends ArrayCollection
      */
     public function getFiles(): array
     {
-        return $this->filter(function ($element): bool {
-            return $element instanceof File;
-        })->toArray();
+        return $this->filter(static fn (mixed $element): bool => $element instanceof File)->toArray();
     }
 
     /**
-     * @return ToArrayInterface[]
      * @psalm-api
      */
     public function toArray(): array
@@ -74,11 +68,9 @@ class FileCollection extends ArrayCollection
     }
 
     /**
-     * @param $key
-     * @return File|Exception|null
      * @psalm-api
      */
-    public function get($key)
+    public function get(mixed $key): File|Exception|null
     {
         return parent::get($key);
     }

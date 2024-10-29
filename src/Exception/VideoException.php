@@ -4,50 +4,53 @@ namespace CarrionGrow\Uploader\Exception;
 
 class VideoException
 {
-
-    static public function widthLarger(int $width): Exception
+    public static function widthLarger(int $width): Exception
     {
-        return self::exception(sprintf('The video width value is larger than the permitted size: %d px', $width));
+        return self::exceptionResolution(sprintf('The video width value is larger than the permitted size: %d px', $width));
     }
 
-    static public function heightLarger(int $height): Exception
+    public static function heightLarger(int $height): Exception
     {
-        return self::exception(sprintf('The video height value is larger than the permitted size: %d px', $height));
+        return self::exceptionResolution(sprintf('The video height value is larger than the permitted size: %d px', $height));
     }
 
-    static public function widthLess(int $width): Exception
+    public static function widthLess(int $width): Exception
     {
-        return self::exception(sprintf('The video width value is less than the permitted size: %d px', $width));
+        return self::exceptionResolution(sprintf('The video width value is less than the permitted size: %d px', $width));
     }
 
-    static public function heightLess(int $height): Exception
+    public static function heightLess(int $height): Exception
     {
-        return self::exception(sprintf('The video height value is less than the permitted size: %d px', $height));
+        return self::exceptionResolution(sprintf('The video height value is less than the permitted size: %d px', $height));
     }
 
-    static public function durationLarge(float $duration): Exception
+    public static function durationLarge(float $duration): Exception
     {
-        return new Exception(Code::VIDEO_DURATION, sprintf('The video duration value is larger than the permitted: %d', $duration));
+        return self::exceptionBitrate(sprintf('The video duration value is larger than the permitted: %d', $duration));
     }
 
-    static public function durationLess(float $duration): Exception
+    public static function durationLess(float $duration): Exception
     {
-        return new Exception(Code::VIDEO_DURATION, sprintf('The video duration value is less than the permitted: %d', $duration));
+        return self::exceptionBitrate(sprintf('The video duration value is less than the permitted: %d', $duration));
     }
 
-    static public function bitrateLarge(float $bitrate): Exception
+    public static function bitrateLarge(float $bitrate): Exception
     {
-        return new Exception(Code::VIDEO_BITRATE, sprintf('The video bitrate value is larger than the permitted: %d', $bitrate));
+        return self::exceptionBitrate(sprintf('The video bitrate value is larger than the permitted: %d', $bitrate));
     }
 
-    static public function bitrateLess(float $bitrate): Exception
+    public static function bitrateLess(float $bitrate): Exception
     {
-        return new Exception(Code::VIDEO_BITRATE, sprintf('The video bitrate value is less than the permitted: %d', $bitrate));
+        return self::exceptionBitrate(sprintf('The video bitrate value is less than the permitted: %d', $bitrate));
     }
 
-    static private function exception(string $message): Exception
+    private static function exceptionBitrate(string $message): Exception
+    {
+        return new Exception(Code::VIDEO_BITRATE, $message);
+    }
+
+    private static function exceptionResolution(string $message): Exception
     {
         return new Exception(Code::RESOLUTION, $message);
     }
-
 }

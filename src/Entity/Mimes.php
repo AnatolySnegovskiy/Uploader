@@ -190,7 +190,7 @@ class Mimes
      * @return bool
      * @psalm-api
      */
-    static public function isImage(string $type): bool
+    public static function isImage(string $type): bool
     {
         return in_array($type, self::IMAGES);
     }
@@ -200,17 +200,17 @@ class Mimes
      * @return bool
      * @psalm-api
      */
-    static public function isVideo(string $type): bool
+    public static function isVideo(string $type): bool
     {
         return in_array($type, self::VIDEOS);
     }
 
     /**
-     * @param array $file
+     * @param array<string, mixed> $file
      * @return string
      * @psalm-api
      */
-    static public function getFileType(array $file): string
+    public static function getFileType(array $file): string
     {
         $fileType = self::getFileMimeType($file);
         $fileType = preg_replace('/^(.+?);.*$/', '\\1', $fileType);
@@ -218,17 +218,17 @@ class Mimes
     }
 
     /**
-     * @param array $file
+     * @param array<string, mixed> $file
      * @return string
      */
-    static private function getFileMimeType(array $file): string
+    private static function getFileMimeType(array $file): string
     {
         $regexp = '/^([a-z\-]+\/[a-z0-9\-\.\+]+)(;\s.+)?$/';
 
         if (function_exists('finfo_file')) {
             $fileInfo = @finfo_open(FILEINFO_MIME);
 
-            if (is_resource($fileInfo)) {
+            if ($fileInfo !== false) {
                 $mime = @finfo_file($fileInfo, $file['tmp_name']);
                 finfo_close($fileInfo);
 
@@ -250,8 +250,10 @@ class Mimes
                     return $matches[1];
                 }
             }
-
-            if (!ini_get('safe_mode') && function_exists('shell_exec')) {
+            /**
+             * @psalm-suppress ForbiddenCode
+             */
+            if (ini_get('safe_mode') === false && function_exists('shell_exec')) {
                 $mime = @shell_exec($cmd);
                 if (is_string($mime) && strlen($mime) > 0) {
                     $mime = explode("\n", trim($mime));
@@ -266,7 +268,7 @@ class Mimes
                 if (is_resource($proc)) {
                     $mime = @fread($proc, 512);
                     @pclose($proc);
-                    if ($mime !== FALSE) {
+                    if ($mime !== false) {
                         $mime = explode("\n", trim($mime));
                         if (preg_match($regexp, $mime[(count($mime) - 1)], $matches)) {
                             return $matches[1];
@@ -284,6 +286,6 @@ class Mimes
             }
         }
 
-        return $file['type'];
+        return $file['type'] ?? '';
     }
 }

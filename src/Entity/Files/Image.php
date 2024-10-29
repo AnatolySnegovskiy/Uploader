@@ -3,66 +3,62 @@
 namespace CarrionGrow\Uploader\Entity\Files;
 
 use CarrionGrow\Uploader\Entity\Configs\ImageConfig;
+use CarrionGrow\Uploader\Exception\Code;
+use CarrionGrow\Uploader\Exception\Exception;
 use CarrionGrow\Uploader\Exception\ImageException;
 
 class Image extends File
 {
-    /** @var int */
-    protected $width;
-    /** @var int */
-    protected $height;
-    /** @var string */
-    protected $imageType;
-    /** @var string */
-    protected $resolution;
-    /** @var ImageConfig */
-    protected $config;
-#region getter
+    protected int $width = 0;
+
+    protected int $height = 0;
+
+    protected string $imageType = '';
+
+    protected string $resolution = '';
+
+    #region getter
 
     /**
-     * @return int
      * @psalm-api
      */
     public function getWidth(): int
     {
-        return $this->width ?? 0;
+        return $this->width;
     }
 
     /**
-     * @return int
      * @psalm-api
      */
     public function getHeight(): int
     {
-        return $this->height ?? 0;
+        return $this->height;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getImageType(): string
     {
-        return $this->imageType ?? '';
+        return $this->imageType;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getResolution(): string
     {
-        return $this->resolution ?? '';
+        return $this->resolution;
     }
 
-#endregion
+    #endregion
 
     public function __construct(ImageConfig $config)
     {
         parent::__construct($config);
     }
 
-    public function behave(array $file)
+    public function behave(array $file): void
     {
         parent::behave($file);
 
@@ -72,22 +68,26 @@ class Image extends File
 
         $dimension = @getimagesize($this->getTempPath());
 
-        if (!$dimension || empty($dimension[0])) {
+        if (!$dimension || $dimension[0] === 0) {
             $this->imageType = $this->getExtension();
             return;
         }
+        $config = $this->getConfig();
+        if ($config->getMaxWidth() > 0 && $dimension[0] > $config->getMaxWidth()) {
+            throw ImageException::widthLarger($config->getMaxWidth());
+        }
 
-        if ($this->config->getMaxWidth() > 0 && $dimension[0] > $this->config->getMaxWidth())
-            throw ImageException::widthLarger($this->config->getMaxWidth());
+        if ($config->getMaxHeight() > 0 && $dimension[1] > $config->getMaxHeight()) {
+            throw ImageException::heightLarger($config->getMaxHeight());
+        }
 
-        if ($this->config->getMaxHeight() > 0 && $dimension[1] > $this->config->getMaxHeight())
-            throw ImageException::heightLarger($this->config->getMaxHeight());
+        if ($config->getMinWidth() > 0 && $dimension[0] < $config->getMinWidth()) {
+            throw ImageException::widthLess($config->getMinWidth());
+        }
 
-        if ($this->config->getMinWidth() > 0 && $dimension[0] < $this->config->getMinWidth())
-            throw ImageException::widthLess($this->config->getMinWidth());
-
-        if ($this->config->getMinHeight() > 0 && $dimension[1] < $this->config->getMinHeight())
-            throw ImageException::heightLess($this->config->getMinHeight());
+        if ($config->getMinHeight() > 0 && $dimension[1] < $config->getMinHeight()) {
+            throw ImageException::heightLess($config->getMinHeight());
+        }
 
         $types = [1 => 'gif', 2 => 'jpeg', 3 => 'png'];
 
@@ -95,5 +95,23 @@ class Image extends File
         $this->height = $dimension[1];
         $this->imageType = $types[$dimension[2]] ?? 'unknown';
         $this->resolution = sprintf('%dx%d', $this->width, $this->height);
+    }
+
+    public function setResolution(string $resolution): Image
+    {
+        $this->resolution = $resolution;
+        return $this;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getConfig(): ImageConfig
+    {
+        if (!($this->config instanceof ImageConfig)) {
+            throw new Exception(Code::ERROR_CONFIG, 'Config must be instance of ' . ImageConfig::class);
+        }
+
+        return $this->config;
     }
 }

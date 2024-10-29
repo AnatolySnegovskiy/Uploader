@@ -10,109 +10,101 @@ use CarrionGrow\Uploader\Exception\Exception;
 
 class File extends Entity implements UploadHandlerInterface
 {
-    /** @var string */
-    protected $tempPath;
-    /** @var float */
-    protected $size;
-    /** @var string */
-    protected $originalName;
-    /** @var string */
-    protected $extension;
-    /** @var string */
-    protected $type;
-    /** @var string */
-    protected $name;
-    /** @var string */
-    protected $fileDir;
-    /** @var string */
-    protected $filePath;
-    /** @var string */
-    protected $rawName;
-    /** @var Config */
-    protected $config;
-#region getters
+    protected string $tempPath = '';
+
+    protected float $size = 0;
+
+    protected string $originalName = '';
+
+    protected string $extension = '';
+
+    protected string $type = '';
+
+    protected string $name = '';
+
+    protected string $fileDir = '';
+
+    protected string $filePath = '';
+
+    protected string $rawName = '';
+
+    protected readonly Config $config;
+
+    #region getters
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getTempPath(): string
     {
-        return $this->tempPath ?? '';
+        return $this->tempPath;
     }
 
     /**
-     * @return float
      * @psalm-api
      */
     public function getSize(): float
     {
-        return $this->size ?? 0;
+        return $this->size;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getOriginalName(): string
     {
-        return $this->originalName ?? '';
+        return $this->originalName;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getExtension(): string
     {
-        return $this->extension ?? '';
+        return $this->extension;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getType(): string
     {
-        return $this->type ?? '';
+        return $this->type;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getName(): string
     {
-        return $this->name ?? '';
+        return $this->name;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getFileDir(): string
     {
-        return $this->fileDir ?? '';
+        return $this->fileDir;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getFilePath(): string
     {
-        return $this->filePath ?? '';
+        return $this->filePath;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getRawName(): string
     {
-        return $this->rawName ?? '';
+        return $this->rawName;
     }
-#endregion
+
+    #endregion
 
     public function __construct(Config $config)
     {
@@ -122,7 +114,7 @@ class File extends Entity implements UploadHandlerInterface
     /**
      * @throws Exception
      */
-    public function behave(array $file)
+    public function behave(array $file): void
     {
         $this->tempPath = $file['tmp_name'];
         $this->size = round($file['size'] / 1024, 2);
@@ -150,10 +142,9 @@ class File extends Entity implements UploadHandlerInterface
     }
 
     /**
-     * @return void
      * @throws Exception
      */
-    private function validateFileType()
+    private function validateFileType(): void
     {
         $allowedTypes = $this->config->getAllowedTypes();
 
@@ -161,8 +152,9 @@ class File extends Entity implements UploadHandlerInterface
             return;
         }
 
-        if (empty($allowedTypes) or !is_array($allowedTypes))
+        if (empty($allowedTypes) or !is_array($allowedTypes)) {
             throw new Exception(Code::FILETYPE);
+        }
 
         foreach ($allowedTypes as $allowed_type) {
             if (!isset(Mimes::EXTENSION_LIST[$allowed_type])) {
@@ -172,7 +164,7 @@ class File extends Entity implements UploadHandlerInterface
             $mime = Mimes::EXTENSION_LIST[$allowed_type];
 
             if (
-                (is_array($mime) && in_array($this->type, $mime, TRUE)) ||
+                (is_array($mime) && in_array($this->type, $mime, true)) ||
                 $mime === $this->type
             ) {
                 return;
@@ -182,11 +174,7 @@ class File extends Entity implements UploadHandlerInterface
         throw new Exception(Code::FILETYPE);
     }
 
-    /**
-     * @param $filename
-     * @return string
-     */
-    private function extractExtension($filename): string
+    private function extractExtension(string $filename): string
     {
         $x = explode('.', $filename);
 
@@ -194,8 +182,8 @@ class File extends Entity implements UploadHandlerInterface
             $extensionResult = '';
 
             foreach (Mimes::EXTENSION_LIST as $extension => $mimesList) {
-                if (!is_array($mimesList) && strpos($mimesList, $this->type) !== false) {
-                    $extensionResult =  '.' . $extension;
+                if (!is_array($mimesList) && str_contains($mimesList, $this->type)) {
+                    $extensionResult = '.' . $extension;
                     break;
                 }
             }
@@ -203,7 +191,7 @@ class File extends Entity implements UploadHandlerInterface
             if (empty($extensionResult)) {
                 foreach (Mimes::EXTENSION_LIST as $extension => $mimesList) {
                     if (is_array($mimesList) && in_array($this->type, $mimesList)) {
-                        $extensionResult =  '.' . $extension;
+                        $extensionResult = '.' . $extension;
                         break;
                     }
                 }
@@ -220,23 +208,19 @@ class File extends Entity implements UploadHandlerInterface
     }
 
     /**
-     * @return void
      * @throws Exception
      */
     private function validateFileSize(): void
     {
-        if ($this->config->getMaxSize() !== 0 && $this->config->getMaxSize() < $this->size)
+        if ($this->config->getMaxSize() !== 0 && $this->config->getMaxSize() < $this->size) {
             throw new Exception(Code::FILE_SIZE);
+        }
 
     }
 
-    /**
-     * @param $filename
-     * @return mixed|string
-     */
-    private function prepFilename($filename)
+    private function prepFilename(string $filename): string
     {
-        if (($extPos = strrpos($filename, '.')) === FALSE) {
+        if (($extPos = strrpos($filename, '.')) === false) {
             return $filename;
         }
 
@@ -246,8 +230,6 @@ class File extends Entity implements UploadHandlerInterface
     }
 
     /**
-     * @param string $filename
-     * @return string
      * @throws Exception
      */
     private function setFilename(string $filename): string
@@ -273,16 +255,13 @@ class File extends Entity implements UploadHandlerInterface
             }
         }
 
-        if ($newFilename === '')
-            throw new Exception(2011, 'The file name you submitted already exists on the server');
+        if ($newFilename === '') {
+            throw new Exception(Code::FILE_COPYING, 'The file name you submitted already exists on the server');
+        }
 
         return $newFilename;
     }
 
-    /**
-     * @param string $filename
-     * @return string
-     */
     private function limitFilenameLength(string $filename): string
     {
         $length = $this->config->getMaxFilename();

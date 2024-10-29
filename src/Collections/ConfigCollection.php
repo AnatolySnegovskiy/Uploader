@@ -4,84 +4,58 @@ namespace CarrionGrow\Uploader\Collections;
 
 use CarrionGrow\Uploader\Entity\Configs\Config;
 use CarrionGrow\Uploader\Factories\ConfigFactories;
-use Exception;
 
+/**
+ * @template TKey of string|int
+ * @template TValue of Config
+ * @extends ArrayCollection<TKey, TValue>
+ */
 class ConfigCollection extends ArrayCollection
 {
     /**
-     * @param string $key
-     * @param Config $value
      * @psalm-api
      */
-    public function setConfig(string $key, Config $value)
+    public function setConfig(string $key, Config $value): void
     {
         parent::set($key, $value);
     }
 
     /**
-     * @return Config
      * @psalm-api
-     * @throws Exception
      */
     public function first(): Config
     {
         $this->addIsEmpty();
-
-        $config = parent::first();
-
-        if (!($config instanceof Config)) {
-            throw new Exception("Collection Error");
-        }
-
-        return $config;
+        return parent::first();
     }
 
     /**
-     * @return Config
      * @psalm-api
-     * @throws Exception
      */
     public function current(): Config
     {
         $this->addIsEmpty();
-        $config = parent::current();
-
-        if (!($config instanceof Config)) {
-            throw new Exception("Collection Error");
-        }
-
-        return $config;
+        return parent::current();
     }
 
     /**
-     * @return Config
      * @psalm-api
-     * @throws Exception
      */
     public function last(): Config
     {
         $this->addIsEmpty();
-        $config = parent::last();
-
-        if (!($config instanceof Config)) {
-            throw new Exception("Collection Error");
-        }
-
-        return $config;
+        return parent::last();
     }
 
     /**
-     * @param mixed $key
-     * @return Config|null
      * @psalm-api
      */
-    public function get($key): ?Config
+    public function get(mixed $key): ?Config
     {
         return parent::get($key);
     }
 
     /**
-     * @return Config[]
      * @psalm-api
      */
     public function toArray(): array
@@ -90,8 +64,6 @@ class ConfigCollection extends ArrayCollection
     }
 
     /**
-     * @param string $inputName
-     * @return ConfigFactories
      * @psalm-api
      */
     public function new(string $inputName): ConfigFactories
@@ -99,10 +71,7 @@ class ConfigCollection extends ArrayCollection
         return new ConfigFactories($this, $inputName);
     }
 
-    /**
-     * @return void
-     */
-    private function addIsEmpty()
+    private function addIsEmpty(): void
     {
         if ($this->isEmpty()) {
             $this->add(new Config());

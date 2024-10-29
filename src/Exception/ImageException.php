@@ -4,28 +4,27 @@ namespace CarrionGrow\Uploader\Exception;
 
 class ImageException
 {
-
-    static public function widthLarger(int $width): Exception
+    public static function widthLarger(int $width): Exception
     {
         return self::exception(sprintf('The image width value is larger than the permitted size: %d px', $width));
     }
 
-    static public function heightLarger(int $height): Exception
+    public static function heightLarger(int $height): Exception
     {
         return self::exception(sprintf('The image height value is larger than the permitted size: %d px', $height));
     }
 
-    static public function widthLess(int $width): Exception
+    public static function widthLess(int $width): Exception
     {
         return self::exception(sprintf('The image width value is less than the permitted size: %d px', $width));
     }
 
-    static public function heightLess(int $height): Exception
+    public static function heightLess(int $height): Exception
     {
         return self::exception(sprintf('The image height value is less than the permitted size: %d px', $height));
     }
 
-    static private function exception(string $message): Exception
+    private static function exception(string $message): Exception
     {
         return new Exception(Code::RESOLUTION, $message);
     }

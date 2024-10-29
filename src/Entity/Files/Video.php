@@ -10,78 +10,68 @@ use getID3;
 
 class Video extends File
 {
-    /** @var int */
-    protected $width;
-    /** @var int */
-    protected $height;
-    /** @var int */
-    protected $duration;
-    /** @var int */
-    protected $bitrate;
-    /** @var string */
-    protected $videoCodec;
-    /** @var string */
-    protected $audioCodec;
-    /** @var VideoConfig */
-    protected $config;
+    protected int $width = 0;
 
-#region getter
+    protected int $height = 0;
+
+    protected int $duration = 0;
+
+    protected int $bitrate = 0;
+
+    protected string $videoCodec = '';
+
+    protected string $audioCodec = '';
+    #region getter
 
     /**
-     * @return int
      * @psalm-api
      */
     public function getWidth(): int
     {
-        return $this->width ?? 0;
+        return $this->width;
     }
 
     /**
-     * @return int
      * @psalm-api
      */
     public function getHeight(): int
     {
-        return $this->height ?? 0;
+        return $this->height;
     }
 
     /**
-     * @return float
      * @psalm-api
      */
     public function getDuration(): float
     {
-        return $this->duration ?? 0;
+        return $this->duration;
     }
 
     /**
-     * @return float
      * @psalm-api
      */
     public function getBitrate(): float
     {
-        return $this->bitrate ?? 0;
+        return $this->bitrate;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getVideoCodec(): string
     {
-        return $this->videoCodec ?? '';
+        return $this->videoCodec;
     }
 
     /**
-     * @return string
      * @psalm-api
      */
     public function getAudioCodec(): string
     {
-        return $this->audioCodec ?? '';
+        return $this->audioCodec;
     }
 
-#endregion
+    #endregion
 
     public function __construct(VideoConfig $config)
     {
@@ -89,14 +79,13 @@ class Video extends File
     }
 
     /**
-     * @param array $file
-     * @return void
      * @throws Exception
      */
-    public function behave(array $file)
+    public function behave(array $file): void
     {
         parent::behave($file);
-
+        $config = $this->getConfig();
+        /** @var array<string, mixed> $meta */
         $meta = (new GetID3())->analyze($this->getTempPath());
         $this->duration = $meta['playtime_seconds'] ?? 0;
         $this->bitrate = ($meta['bitrate'] ?? 0) / 1000;
@@ -105,29 +94,37 @@ class Video extends File
         $this->width = (int)($meta['video']['resolution_x'] ?? 0);
         $this->height = (int)($meta['video']['resolution_y'] ?? 0);
 
-        if ($this->config->getMaxDuration() > 0 && $this->duration > $this->config->getMaxDuration())
-            throw VideoException::durationLarge($this->config->getMaxWidth());
+        if ($config->getMaxDuration() > 0 && $this->duration > $config->getMaxDuration()) {
+            throw VideoException::durationLarge($config->getMaxWidth());
+        }
 
-        if ($this->config->getMinDuration() > 0 && $this->duration < $this->config->getMinDuration())
-            throw VideoException::durationLess($this->config->getMinDuration());
+        if ($config->getMinDuration() > 0 && $this->duration < $config->getMinDuration()) {
+            throw VideoException::durationLess($config->getMinDuration());
+        }
 
-        if ($this->config->getMaxBitrate() > 0 && $this->bitrate > $this->config->getMaxBitrate())
-            throw VideoException::bitrateLarge($this->config->getMaxBitrate());
+        if ($config->getMaxBitrate() > 0 && $this->bitrate > $config->getMaxBitrate()) {
+            throw VideoException::bitrateLarge($config->getMaxBitrate());
+        }
 
-        if ($this->config->getMinBitrate() > 0 && $this->bitrate < $this->config->getMinBitrate())
-            throw VideoException::bitrateLess($this->config->getMinBitrate());
+        if ($config->getMinBitrate() > 0 && $this->bitrate < $config->getMinBitrate()) {
+            throw VideoException::bitrateLess($config->getMinBitrate());
+        }
 
-        if ($this->config->getMaxWidth() > 0 && $this->width > $this->config->getMaxWidth())
-            throw VideoException::widthLarger($this->config->getMaxWidth());
+        if ($config->getMaxWidth() > 0 && $this->width > $config->getMaxWidth()) {
+            throw VideoException::widthLarger($config->getMaxWidth());
+        }
 
-        if ($this->config->getMaxHeight() > 0 && $this->height > $this->config->getMaxHeight())
-            throw VideoException::heightLarger($this->config->getMaxHeight());
+        if ($config->getMaxHeight() > 0 && $this->height > $config->getMaxHeight()) {
+            throw VideoException::heightLarger($config->getMaxHeight());
+        }
 
-        if ($this->config->getMinWidth() > 0 && $this->width < $this->config->getMinWidth())
-            throw VideoException::widthLess($this->config->getMinWidth());
+        if ($config->getMinWidth() > 0 && $this->width < $config->getMinWidth()) {
+            throw VideoException::widthLess($config->getMinWidth());
+        }
 
-        if ($this->config->getMinHeight() > 0 && $this->height < $this->config->getMinHeight())
-            throw VideoException::heightLess($this->config->getMinHeight());
+        if ($config->getMinHeight() > 0 && $this->height < $config->getMinHeight()) {
+            throw VideoException::heightLess($config->getMinHeight());
+        }
 
         $this->validateVideoCodec();
         $this->validateAudioCodec();
@@ -135,18 +132,19 @@ class Video extends File
 
     /**
      * @throws Exception
-     * @return void
      */
-    private function validateVideoCodec()
+    private function validateVideoCodec(): void
     {
-        $allowedCodec = $this->config->getVideoCodec();
+        $config = $this->getConfig();
+        $allowedCodec = $config->getVideoCodec();
 
         if ($allowedCodec === '*') {
             return;
         }
 
+        /** @var string $item */
         foreach ((array)$allowedCodec as $item) {
-            if (strpos(strtolower($this->videoCodec), strtolower($item)) !== false) {
+            if (str_contains(strtolower($this->videoCodec), strtolower($item))) {
                 return;
             }
         }
@@ -156,22 +154,35 @@ class Video extends File
 
     /**
      * @throws Exception
-     * @return void
      */
-    private function validateAudioCodec()
+    private function validateAudioCodec(): void
     {
-        $allowedCodec = $this->config->getAudioCodec();
+        $config = $this->getConfig();
+        $allowedCodec = $config->getAudioCodec();
 
         if ($allowedCodec === '*') {
             return;
         }
 
+        /** @var string $item */
         foreach ((array)$allowedCodec as $item) {
-            if (strpos(strtolower($this->audioCodec), strtolower($item)) !== false) {
+            if (str_contains(strtolower($this->audioCodec), strtolower($item))) {
                 return;
             }
         }
 
         throw new Exception(Code::AUDIO_CODEC);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getConfig(): VideoConfig
+    {
+        if (!($this->config instanceof VideoConfig)) {
+            throw new Exception(Code::ERROR_CONFIG, 'Config must be instance of ' . VideoConfig::class);
+        }
+
+        return $this->config;
     }
 }

@@ -6,10 +6,7 @@ use CarrionGrow\Uploader\Collections\ConfigCollection;
 
 class BuilderImageConfig extends ImageConfig
 {
-    /**
-     * @var ConfigCollection
-     */
-    private $collection;
+    private ConfigCollection $collection;
 
     public function __construct(ConfigCollection $collection)
     {
@@ -18,7 +15,6 @@ class BuilderImageConfig extends ImageConfig
     }
 
     /**
-     * @return ConfigCollection
      * @psalm-api
      */
     public function save(): ConfigCollection

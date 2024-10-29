@@ -6,26 +6,25 @@ use CarrionGrow\Uploader\Entity\Files\Video;
 
 class VideoConfig extends ImageConfig
 {
-    /** @var int */
-    private $minBitrate = 0;
-    /** @var int */
-    private $maxBitrate = 0;
-    /** @var int */
-    private $maxDuration = 0;
-    /** @var int */
-    private $minDuration = 0;
-    /** @var array|string */
-    private $videoCodec = '*';
-    /** @var array|string */
-    private $audioCodec = '*';
+    private int $minBitrate = 0;
+
+    private int $maxBitrate = 0;
+
+    private int $maxDuration = 0;
+
+    private int $minDuration = 0;
+
+    private string|array $videoCodec = '*';
+
+    private string|array $audioCodec = '*';
 
     public function __construct()
     {
         parent::__construct();
         $this->handler = new Video($this);
     }
+
     /**
-     * @return int
      * @psalm-api
      */
     public function getMinBitrate(): int
@@ -34,8 +33,6 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @param int $minBitrate
-     * @return VideoConfig
      * @psalm-api
      */
     public function setMinBitrate(int $minBitrate): self
@@ -45,7 +42,6 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @return int
      * @psalm-api
      */
     public function getMaxBitrate(): int
@@ -54,8 +50,6 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @param int $maxBitrate
-     * @return VideoConfig
      * @psalm-api
      */
     public function setMaxBitrate(int $maxBitrate): self
@@ -65,7 +59,6 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @return int
      * @psalm-api
      */
     public function getMaxDuration(): int
@@ -74,8 +67,6 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @param int $maxDuration
-     * @return VideoConfig
      * @psalm-api
      */
     public function setMaxDuration(int $maxDuration): self
@@ -85,7 +76,6 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @return int
      * @psalm-api
      */
     public function getMinDuration(): int
@@ -94,8 +84,6 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @param int $minDuration
-     * @return VideoConfig
      * @psalm-api
      */
     public function setMinDuration(int $minDuration): self
@@ -105,20 +93,17 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @return array|string
      * @psalm-api
      */
-    public function getVideoCodec()
+    public function getVideoCodec(): array|string
     {
         return $this->videoCodec;
     }
 
     /**
-     * @param array|string $videoCodec
-     * @return VideoConfig
      * @psalm-api
      */
-    public function setVideoCodec($videoCodec): self
+    public function setVideoCodec(array|string $videoCodec): self
     {
         $this->videoCodec =
             (is_array($videoCodec) or $videoCodec === '*')
@@ -128,20 +113,17 @@ class VideoConfig extends ImageConfig
     }
 
     /**
-     * @return array|string
      * @psalm-api
      */
-    public function getAudioCodec()
+    public function getAudioCodec(): array|string
     {
         return $this->audioCodec;
     }
 
     /**
-     * @param array|string $audioCodec
-     * @return VideoConfig
      * @psalm-api
      */
-    public function setAudioCodec($audioCodec): self
+    public function setAudioCodec(array|string $audioCodec): self
     {
         $this->audioCodec =
             (is_array($audioCodec) or $audioCodec === '*')
